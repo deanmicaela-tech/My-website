@@ -106,7 +106,7 @@
         })
         .catch(function () {
           button.disabled = false;
-          status.textContent = 'This could not be sent. Please try again, or email us at info@orvellawellness.com.';
+          status.textContent = 'This could not be sent. Please try again, or email us at orvellawellness@gmail.com.';
         });
     });
   });
