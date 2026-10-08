@@ -99,7 +99,8 @@
 
   <!-- ============ POP-UP EVENTS ============
        To add an event: copy one <li class="event"> ... </li> block and change the date, title, time and text.
-       To remove one: delete its whole <li> block. -->
+       To remove one: delete its whole <li> block.
+       Keep reserve.html in step: it lists the same events for people to pick from. -->
   <section class="section events" id="events">
     <div class="wrap events-layout">
       <header class="section-head">
@@ -118,7 +119,7 @@
               <p class="event-meta">9:00 – 10:00 AM · Location announced soon</p>
               <p class="event-desc">A slow, full-body mat class to start your weekend feeling strong and open.</p>
             </div>
-            <a class="btn btn-small btn-outline" href="#book">Reserve</a>
+            <a class="btn btn-small btn-outline" href="reserve.html?event=2026-10-24">Reserve</a>
           </li>
           <li class="event">
             <time class="event-date" datetime="2026-11-08"><span class="event-month">Nov</span><span class="event-day">8</span><span class="event-weekday">Sun</span></time>
@@ -127,7 +128,7 @@
               <p class="event-meta">10:00 – 11:15 AM · Location announced soon</p>
               <p class="event-desc">A 50-minute mat class, then matcha and time to meet everyone on the next mat.</p>
             </div>
-            <a class="btn btn-small btn-outline" href="#book">Reserve</a>
+            <a class="btn btn-small btn-outline" href="reserve.html?event=2026-11-08">Reserve</a>
           </li>
           <li class="event">
             <time class="event-date" datetime="2026-11-20"><span class="event-month">Nov</span><span class="event-day">20</span><span class="event-weekday">Fri</span></time>
@@ -136,7 +137,7 @@
               <p class="event-meta">6:30 – 7:30 PM · Location announced soon</p>
               <p class="event-desc">An evening class by candlelight, finished with a long, slow stretch.</p>
             </div>
-            <a class="btn btn-small btn-outline" href="#book">Reserve</a>
+            <a class="btn btn-small btn-outline" href="reserve.html?event=2026-11-20">Reserve</a>
           </li>
           <li class="event">
             <time class="event-date" datetime="2026-12-12"><span class="event-month">Dec</span><span class="event-day">12</span><span class="event-weekday">Sat</span></time>
@@ -145,7 +146,7 @@
               <p class="event-meta">10:00 – 11:00 AM · Location announced soon</p>
               <p class="event-desc">Our end-of-year class, with festive treats and a little something to take home.</p>
             </div>
-            <a class="btn btn-small btn-outline" href="#book">Reserve</a>
+            <a class="btn btn-small btn-outline" href="reserve.html?event=2026-12-12">Reserve</a>
           </li>
         </ol>
         <p class="events-note">Classes run about 60 minutes.</p>
@@ -165,8 +166,8 @@
           <p class="eyebrow">Public classes</p>
           <h3>Join a pop-up</h3>
           <p>Reserve your mat for any upcoming pop-up through our online booking page. Every class is open to all levels.</p>
-          <!-- BOOKING LINK: replace href="#events" with your booking page (Momence, Acuity, Eventbrite, Luma...) -->
-          <a class="btn" href="#events" data-booking-link>Book a pop-up</a>
+          <!-- BOOKING LINK: when you have booking software, replace reserve.html with your booking page link -->
+          <a class="btn" href="reserve.html">Book a pop-up</a>
         </article>
         <article class="book-card">
           <p class="eyebrow">Celebrations &amp; brands</p>
@@ -193,8 +194,10 @@
       </div>
 
       <div class="contact-card">
-        <!-- FORM: paste your form endpoint (for example from Formspree) into data-endpoint="" to receive messages by email. -->
-        <form class="contact-form" id="contact-form" data-endpoint="">
+        <!-- FORM: messages are collected by Netlify Forms (Netlify dashboard > Forms > contact) -->
+        <form class="contact-form" id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-thanks="We have your note and will be in touch soon.">
+          <input type="hidden" name="form-name" value="contact">
+          <p class="hidden-field"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
           <div class="field-row">
             <div class="field">
               <label for="cf-name">Name</label>
@@ -239,7 +242,7 @@
           </div>
           <div class="form-actions">
             <button class="btn" type="submit">Send message</button>
-            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+            <p class="form-status" role="status" aria-live="polite"></p>
           </div>
         </form>
       </div>
