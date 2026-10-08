@@ -36,14 +36,6 @@
     date.min = t.getFullYear() + '-' + String(t.getMonth() + 1).padStart(2, '0') + '-' + String(t.getDate()).padStart(2, '0');
   }
 
-  // Pre-select the class picked with a Reserve button (reserve.html?event=2026-10-24)
-  var picked = new URLSearchParams(window.location.search).get('event');
-  if (picked) {
-    document.querySelectorAll('input[name="event"]').forEach(function (radio) {
-      if (radio.getAttribute('data-id') === picked) radio.checked = true;
-    });
-  }
-
   // Forms are sent to Netlify Forms, which collects the submissions
   function showThanks(form) {
     var card = form.parentElement;

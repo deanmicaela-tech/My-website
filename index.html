@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#FBF7F2">
   <meta property="og:title" content="Orvella">
   <meta property="og:description" content="Pilates pop-ups and private events, made for gathering the people you love.">
-  <meta property="og:image" content="assets/orvella-logo.jpg">
+  <meta property="og:image" content="https://orvellawellness.com/assets/orvella-logo.jpg">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <!-- FONTS:START -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -100,7 +100,8 @@
   <!-- ============ POP-UP EVENTS ============
        To add an event: copy one <li class="event"> ... </li> block and change the date, title, time and text.
        To remove one: delete its whole <li> block.
-       Keep reserve.html in step: it lists the same events for people to pick from. -->
+       Each event has its own page in the events/ folder (details, price, photo and booking form);
+       the Reserve button links to it. -->
   <section class="section events" id="events">
     <div class="wrap events-layout">
       <header class="section-head">
@@ -119,7 +120,7 @@
               <p class="event-meta">9:00 – 10:00 AM · Location announced soon</p>
               <p class="event-desc">A slow, full-body mat class to start your weekend feeling strong and open.</p>
             </div>
-            <a class="btn btn-small btn-outline" href="reserve.html?event=2026-10-24">Reserve</a>
+            <a class="btn btn-small btn-outline" href="events/sunrise-mat-pilates.html">Reserve</a>
           </li>
           <li class="event">
             <time class="event-date" datetime="2026-11-08"><span class="event-month">Nov</span><span class="event-day">8</span><span class="event-weekday">Sun</span></time>
@@ -128,7 +129,7 @@
               <p class="event-meta">10:00 – 11:15 AM · Location announced soon</p>
               <p class="event-desc">A 50-minute mat class, then matcha and time to meet everyone on the next mat.</p>
             </div>
-            <a class="btn btn-small btn-outline" href="reserve.html?event=2026-11-08">Reserve</a>
+            <a class="btn btn-small btn-outline" href="events/pilates-and-matcha.html">Reserve</a>
           </li>
           <li class="event">
             <time class="event-date" datetime="2026-11-20"><span class="event-month">Nov</span><span class="event-day">20</span><span class="event-weekday">Fri</span></time>
@@ -137,7 +138,7 @@
               <p class="event-meta">6:30 – 7:30 PM · Location announced soon</p>
               <p class="event-desc">An evening class by candlelight, finished with a long, slow stretch.</p>
             </div>
-            <a class="btn btn-small btn-outline" href="reserve.html?event=2026-11-20">Reserve</a>
+            <a class="btn btn-small btn-outline" href="events/candlelight-sculpt-and-stretch.html">Reserve</a>
           </li>
           <li class="event">
             <time class="event-date" datetime="2026-12-12"><span class="event-month">Dec</span><span class="event-day">12</span><span class="event-weekday">Sat</span></time>
@@ -146,7 +147,7 @@
               <p class="event-meta">10:00 – 11:00 AM · Location announced soon</p>
               <p class="event-desc">Our end-of-year class, with festive treats and a little something to take home.</p>
             </div>
-            <a class="btn btn-small btn-outline" href="reserve.html?event=2026-12-12">Reserve</a>
+            <a class="btn btn-small btn-outline" href="events/holiday-glow-pop-up.html">Reserve</a>
           </li>
         </ol>
         <p class="events-note">Classes run about 60 minutes.</p>
@@ -165,9 +166,9 @@
         <article class="book-card">
           <p class="eyebrow">Public classes</p>
           <h3>Join a pop-up</h3>
-          <p>Reserve your mat for any upcoming pop-up through our online booking page. Every class is open to all levels.</p>
-          <!-- BOOKING LINK: when you have booking software, replace reserve.html with your booking page link -->
-          <a class="btn" href="reserve.html">Book a pop-up</a>
+          <p>Pick any upcoming pop-up and tap Reserve to see the details and price and send your request. Every class is open to all levels.</p>
+          <!-- BOOKING LINK: when you have booking software, you can point this button at your booking page -->
+          <a class="btn" href="#events">Book a pop-up</a>
         </article>
         <article class="book-card">
           <p class="eyebrow">Celebrations &amp; brands</p>
