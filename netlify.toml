@@ -15,3 +15,15 @@
 [[redirects]]
   from = "/events/holiday-glow-pop-up.html"
   to = "/#events"
+
+# Saved events, off the site for now (see drafts/README.md)
+[[redirects]]
+  from = "/events/new-years-pilates-and-vision-boards.html"
+  to = "/#events"
+[[redirects]]
+  from = "/events/galentines-pilates.html"
+  to = "/#events"
+[[redirects]]
+  from = "/drafts/*"
+  to = "/#events"
+  force = true
