@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Reserve | Orvella</title>
-  <meta name="description" content="Reserve your spot at an upcoming Orvella pilates pop-up class.">
+  <title>Pilates &amp; Matcha | Orvella</title>
+  <meta name="description" content="Pilates &amp; Matcha with Orvella on Sunday, November 8, 2026, 10:00 – 11:15 AM. Reserve your spot.">
   <meta name="theme-color" content="#FBF7F2">
-  <meta property="og:title" content="Reserve with Orvella">
+  <meta property="og:title" content="Pilates &amp; Matcha with Orvella">
   <meta property="og:description" content="Pilates pop-ups and private events, made for gathering the people you love.">
-  <meta property="og:image" content="assets/orvella-logo.jpg">
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:image" content="https://orvellawellness.com/assets/orvella-logo.jpg">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <!-- FONTS:START -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..500,0..100,0..1;1,9..144,300..500,0..100,0..1&amp;family=Jost:wght@300;400;500&amp;family=Pinyon+Script&amp;display=swap">
   <!-- FONTS:END -->
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
 <!-- BODY:START -->
@@ -42,18 +42,18 @@
 
 <header class="site-header" id="site-header">
   <div class="wrap header-inner">
-    <a class="brand" href="index.html" aria-label="Orvella home">
+    <a class="brand" href="../index.html" aria-label="Orvella home">
       <svg class="brand-mark" aria-hidden="true" focusable="false"><use href="#wordmark"/></svg>
     </a>
     <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
       <span class="sr-only">Menu</span><span class="menu-lines" aria-hidden="true"></span>
     </button>
     <nav class="site-nav" id="site-nav" aria-label="Main">
-      <a href="index.html#about">About</a>
-      <a href="index.html#events">Pop-ups</a>
-      <a href="faq.html">Q&amp;A</a>
-      <a href="index.html#contact">Contact</a>
-      <a class="btn btn-small" href="index.html#book">Book now</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#events">Pop-ups</a>
+      <a href="../faq.html">Q&amp;A</a>
+      <a href="../index.html#contact">Contact</a>
+      <a class="btn btn-small" href="../index.html#book">Book now</a>
     </nav>
   </div>
 </header>
@@ -61,79 +61,78 @@
 <main id="main">
   <section class="page-hero scallop-bottom" id="top">
     <div class="wrap">
-      <p class="eyebrow">Reserve</p>
-      <h1 class="eyebrow page-title">Save your spot</h1>
-      <p class="eyebrow">Pick a pop-up, send your request, and we'll email you to confirm.</p>
+      <p class="eyebrow">Pop-up class</p>
+      <h1 class="eyebrow page-title">Pilates &amp; Matcha</h1>
+      <p class="eyebrow">Sunday, November 8 · 10:00 – 11:15 AM</p>
     </div>
   </section>
 
-  <!-- ============ BOOKING FORM ============
-       The classes below should match the upcoming pop-ups on index.html.
-       Requests are collected by Netlify Forms (Netlify dashboard > Forms > reserve). -->
   <section class="section">
-    <div class="wrap">
-      <div class="reserve-card">
-        <form class="reserve-form" id="reserve-form" name="reserve" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-thanks="We've received your request for {event}. We'll email you to confirm your spot.">
-          <input type="hidden" name="form-name" value="reserve">
-          <p class="hidden-field"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
-          <fieldset class="event-choices">
-            <legend>Choose your pop-up</legend>
-            <label class="event-choice">
-              <input type="radio" name="event" value="Sat, Oct 24 · Sunrise Mat Pilates · 9:00 – 10:00 AM" data-id="2026-10-24" required>
-              <time class="event-date" datetime="2026-10-24"><span class="event-month">Oct</span><span class="event-day">24</span><span class="event-weekday">Sat</span></time>
-              <span class="event-info"><span class="event-title">Sunrise Mat Pilates</span><span class="event-meta">9:00 – 10:00 AM · Location announced soon</span></span>
-            </label>
-            <label class="event-choice">
-              <input type="radio" name="event" value="Sun, Nov 8 · Pilates &amp; Matcha · 10:00 – 11:15 AM" data-id="2026-11-08" required>
-              <time class="event-date" datetime="2026-11-08"><span class="event-month">Nov</span><span class="event-day">8</span><span class="event-weekday">Sun</span></time>
-              <span class="event-info"><span class="event-title">Pilates &amp; Matcha</span><span class="event-meta">10:00 – 11:15 AM · Location announced soon</span></span>
-            </label>
-            <label class="event-choice">
-              <input type="radio" name="event" value="Fri, Nov 20 · Candlelight Sculpt &amp; Stretch · 6:30 – 7:30 PM" data-id="2026-11-20" required>
-              <time class="event-date" datetime="2026-11-20"><span class="event-month">Nov</span><span class="event-day">20</span><span class="event-weekday">Fri</span></time>
-              <span class="event-info"><span class="event-title">Candlelight Sculpt &amp; Stretch</span><span class="event-meta">6:30 – 7:30 PM · Location announced soon</span></span>
-            </label>
-            <label class="event-choice">
-              <input type="radio" name="event" value="Sat, Dec 12 · Holiday Glow Pop-Up · 10:00 – 11:00 AM" data-id="2026-12-12" required>
-              <time class="event-date" datetime="2026-12-12"><span class="event-month">Dec</span><span class="event-day">12</span><span class="event-weekday">Sat</span></time>
-              <span class="event-info"><span class="event-title">Holiday Glow Pop-Up</span><span class="event-meta">10:00 – 11:00 AM · Location announced soon</span></span>
-            </label>
-          </fieldset>
-          <div class="field-row">
-            <div class="field">
-              <label for="rf-name">Name</label>
-              <input id="rf-name" name="name" type="text" autocomplete="name" required>
+    <div class="wrap event-layout">
+      <!-- PHOTO: to add a photo, put it in assets/events/ and replace the whole placeholder <div> below with:
+           <img class="event-photo" src="../assets/events/pilates-and-matcha.jpg" alt="Describe the photo"> -->
+      <div class="event-photo event-photo-placeholder" aria-hidden="true">
+        <svg class="bow" focusable="false"><use href="#bow"/></svg>
+        <span class="event-photo-title">Pilates &amp; Matcha</span>
+        <svg class="event-photo-mark" focusable="false"><use href="#wordmark"/></svg>
+      </div>
+
+      <div class="event-details">
+        <a class="back-link" href="../index.html#events">← All pop-ups</a>
+        <p class="event-price"><span class="price">$40</span> per person</p>
+        <p class="event-lead">A 50-minute mat class, then matcha and time to meet everyone on the next mat. Come on your own or bring a friend. This one is all about connecting.</p>
+        <dl class="event-facts">
+          <div><dt>Date</dt><dd>Sunday, November 8, 2026</dd></div>
+          <div><dt>Time</dt><dd>10:00 – 11:15 AM</dd></div>
+          <div><dt>Location</dt><dd>Announced soon</dd></div>
+          <div><dt>Length</dt><dd>50-minute class, then matcha</dd></div>
+          <div><dt>Level</dt><dd>All levels</dd></div>
+          <div><dt>Price</dt><dd>$40 per person</dd></div>
+        </dl>
+
+        <div class="reserve-card" id="reserve">
+          <h2 class="eyebrow">Reserve your spot</h2>
+          <!-- Requests are collected by Netlify Forms (Netlify dashboard > Forms > reserve) -->
+          <form class="reserve-form" name="reserve" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-thanks="We've received your request for {event}. We'll email you to confirm your spot.">
+            <input type="hidden" name="form-name" value="reserve">
+            <input type="hidden" name="event" value="Sun, Nov 8 · Pilates &amp; Matcha · 10:00 – 11:15 AM">
+            <p class="hidden-field"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+            <div class="field-row">
+              <div class="field">
+                <label for="rf-name">Name</label>
+                <input id="rf-name" name="name" type="text" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="rf-email">Email</label>
+                <input id="rf-email" name="email" type="email" autocomplete="email" required>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="rf-phone">Phone <span class="optional">(optional)</span></label>
+                <input id="rf-phone" name="phone" type="tel" autocomplete="tel">
+              </div>
+              <div class="field">
+                <label for="rf-spots">Number of spots</label>
+                <select id="rf-spots" name="spots">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+              </div>
             </div>
             <div class="field">
-              <label for="rf-email">Email</label>
-              <input id="rf-email" name="email" type="email" autocomplete="email" required>
+              <label for="rf-notes">Anything we should know? <span class="optional">(optional)</span></label>
+              <textarea id="rf-notes" name="notes" rows="3" placeholder="First class, an injury, a friend joining you..."></textarea>
             </div>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label for="rf-phone">Phone <span class="optional">(optional)</span></label>
-              <input id="rf-phone" name="phone" type="tel" autocomplete="tel">
+            <div class="form-actions">
+              <button class="btn" type="submit">Request my spot</button>
+              <p class="form-status" role="status" aria-live="polite"></p>
             </div>
-            <div class="field">
-              <label for="rf-spots">Number of spots</label>
-              <select id="rf-spots" name="spots">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-              </select>
-            </div>
-          </div>
-          <div class="field">
-            <label for="rf-notes">Anything we should know? <span class="optional">(optional)</span></label>
-            <textarea id="rf-notes" name="notes" rows="3" placeholder="First class, an injury, a friend joining you..."></textarea>
-          </div>
-          <div class="form-actions">
-            <button class="btn" type="submit">Request my spot</button>
-            <p class="form-status" role="status" aria-live="polite"></p>
-          </div>
-          <p class="fine-print">Your spot is confirmed once we email you back.</p>
-        </form>
+            <p class="fine-print">Your spot is confirmed once we email you back.</p>
+          </form>
+        </div>
       </div>
     </div>
   </section>
@@ -144,7 +143,7 @@
   <div class="wrap">
     <div class="footer-inner">
       <div class="footer-brand">
-        <a href="index.html" aria-label="Orvella home">
+        <a href="../index.html" aria-label="Orvella home">
           <svg class="footer-mark" aria-hidden="true" focusable="false"><use href="#wordmark"/></svg>
         </a>
         <p>Pilates pop-ups, wellness gatherings and private events.</p>
@@ -153,11 +152,11 @@
       <nav aria-label="Footer">
         <h2>Explore</h2>
         <ul class="footer-links">
-          <li><a href="index.html#about">About</a></li>
-          <li><a href="index.html#events">Pop-ups</a></li>
-          <li><a href="index.html#book">Book</a></li>
-          <li><a href="faq.html">Q&amp;A</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="../index.html#about">About</a></li>
+          <li><a href="../index.html#events">Pop-ups</a></li>
+          <li><a href="../index.html#book">Book</a></li>
+          <li><a href="../faq.html">Q&amp;A</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
         </ul>
       </nav>
       <div>
@@ -179,6 +178,6 @@
 </footer>
 <!-- BODY:END -->
 
-<script src="js/main.js"></script>
+<script src="../js/main.js"></script>
 </body>
 </html>
