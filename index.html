@@ -52,6 +52,7 @@
       <a href="#about">About</a>
       <a href="#events">Pop-ups</a>
       <a href="faq.html">Q&amp;A</a>
+      <a href="#collab">Collaborate</a>
       <a href="#contact">Contact</a>
       <a class="btn btn-small" href="#book">Book now</a>
     </nav>
@@ -197,6 +198,47 @@
     </div>
   </section>
 
+  <!-- ============ COLLABORATIONS ============ -->
+  <section class="section collab" id="collab">
+    <div class="wrap contact-grid">
+      <div class="contact-intro">
+        <p class="eyebrow">Collaborations</p>
+        <h2>Let's create <em class="script">together</em></h2>
+        <p>Are you a brand that shares our love of movement and wellness? We'd love to hear from you. Tell us a little about your brand and your idea, and we'll be in touch.</p>
+      </div>
+
+      <div class="contact-card">
+        <!-- FORM: messages are collected by Netlify Forms (Netlify dashboard > Forms > collaborations) -->
+        <form class="contact-form" id="collab-form" name="collaborations" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-thanks="We have your note and will be in touch soon.">
+          <input type="hidden" name="form-name" value="collaborations">
+          <p class="hidden-field"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+          <div class="field-row">
+            <div class="field">
+              <label for="co-name">Name</label>
+              <input id="co-name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="co-brand">Brand</label>
+              <input id="co-brand" name="brand" type="text" autocomplete="organization" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="co-email">Email</label>
+            <input id="co-email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="co-message">Message</label>
+            <textarea id="co-message" name="message" rows="5" required placeholder="Tell us about your brand and the collaboration you have in mind."></textarea>
+          </div>
+          <div class="form-actions">
+            <button class="btn" type="submit">Send message</button>
+            <p class="form-status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ CONTACT ============ -->
   <section class="section contact" id="contact">
     <div class="wrap contact-grid">
@@ -239,7 +281,8 @@
                 <option>Bridal party or bachelorette</option>
                 <option>Birthday</option>
                 <option>Grand opening</option>
-                <option>Baby shower</option>
+                <option>Sorority or sisterhood event</option>
+                <option>Corporate retreat</option>
                 <option>Team or brand event</option>
                 <option>Something else</option>
               </select>
@@ -288,6 +331,7 @@
           <li><a href="#events">Pop-ups</a></li>
           <li><a href="#book">Book</a></li>
           <li><a href="faq.html">Q&amp;A</a></li>
+          <li><a href="#collab">Collaborate</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
