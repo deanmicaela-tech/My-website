@@ -48,7 +48,7 @@ Search `index.html` for these comments:
 - **`SOCIAL LINKS`**: Instagram already points to @orvellawellness. Replace the `href="#"` on the TikTok, Facebook and Pinterest icons with your profile links, or delete the ones you don't use (in both `index.html` and `faq.html`).
 - **`BOOKING LINK`**: when you choose booking software (Luma, Momence, Eventbrite...), replace `reserve.html` on the "Book a pop-up" button with your booking page. You can point each event's **Reserve** button at its own ticket link too.
 - **Forms**: the contact form and the booking forms on the event pages are sent to **Netlify Forms** (as "contact" and "reserve"). Submissions show up in the Netlify dashboard under *Forms*. To get them by email, go to *Project configuration → Notifications → Emails and webhooks → Form submission notifications* and add your email.
-- **Events**: the four pop-ups, their prices and descriptions are samples. To add an event, copy an `<li class="event">` block in `index.html`, copy one of the pages in `events/` and update both, and point the new Reserve button at the new page. To remove one, delete its block and its page.
+- **Events**: the six pop-ups (Nov 2026 to Feb 2027). Descriptions are a starting point, and locations say "announced soon" until they are set. To add an event, copy an `<li class="event">` block in `index.html`, copy one of the pages in `events/` and update both, and point the new Reserve button at the new page. To remove one, delete its block and its page.
 - **Copy**: all wording, including the Q&A answers, is a starting point. Change anything that doesn't sound like you or isn't accurate.
 
 ## Brand

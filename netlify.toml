@@ -1,3 +1,17 @@
 # Plain static site: no build step, serve the files from the repo root.
 [build]
   publish = "."
+
+# Old event pages that were replaced: send anyone with an old link to the pop-ups list
+[[redirects]]
+  from = "/events/sunrise-mat-pilates.html"
+  to = "/#events"
+[[redirects]]
+  from = "/events/pilates-and-matcha.html"
+  to = "/#events"
+[[redirects]]
+  from = "/events/candlelight-sculpt-and-stretch.html"
+  to = "/#events"
+[[redirects]]
+  from = "/events/holiday-glow-pop-up.html"
+  to = "/#events"
