@@ -87,10 +87,15 @@
           <div><dt>Price</dt><dd>$80 per person</dd></div>
         </dl>
 
-        <div class="reserve-card" id="reserve">
+        <!-- Booking opens one week before the class. The time below is local time in the zone set at the top of js/main.js. -->
+        <div class="reserve-card" id="reserve" data-booking-opens="2027-01-30T10:00">
           <h2 class="eyebrow">Reserve your spot</h2>
+          <div class="booking-soon" data-when="before">
+            <p class="booking-soon-date">Booking opens Saturday, January 30 at 10:00&nbsp;AM</p>
+            <p class="fine-print">Booking opens one week before the class. Check back then to reserve your spot.</p>
+          </div>
           <!-- Requests are collected by Netlify Forms (Netlify dashboard > Forms > reserve) -->
-          <form class="reserve-form" name="reserve" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-thanks="We've received your request for {event}. We'll email you to confirm your spot.">
+          <form class="reserve-form" data-when="after" hidden name="reserve" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-thanks="We've received your request for {event}. We'll email you to confirm your spot.">
             <input type="hidden" name="form-name" value="reserve">
             <input type="hidden" name="event" value="Sat, Feb 6 · Galentine’s Pilates · 10:00 AM – 12:00 PM">
             <p class="hidden-field"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>

@@ -36,6 +36,40 @@
     date.min = t.getFullYear() + '-' + String(t.getMonth() + 1).padStart(2, '0') + '-' + String(t.getDate()).padStart(2, '0');
   }
 
+  // Booking opens one week before each class (data-booking-opens on the event,
+  // written as local time in TIME_ZONE). Before then, anything marked
+  // data-when="before" shows; after, data-when="after" shows instead.
+  var TIME_ZONE = 'America/New_York';
+  var zoneParts = new Intl.DateTimeFormat('en-US', {
+    timeZone: TIME_ZONE, hourCycle: 'h23',
+    year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'
+  });
+  function zoneOffset(t) {
+    var p = {};
+    zoneParts.formatToParts(new Date(t)).forEach(function (x) { p[x.type] = x.value; });
+    return Date.UTC(+p.year, p.month - 1, +p.day, +p.hour, +p.minute) - t;
+  }
+  function zonedTime(local) {
+    var n = local.split(/[-T:]/).map(Number);
+    var asUtc = Date.UTC(n[0], n[1] - 1, n[2], n[3], n[4]);
+    return asUtc - zoneOffset(asUtc - zoneOffset(asUtc));
+  }
+  var gated = document.querySelectorAll('[data-booking-opens]');
+  function updateBooking() {
+    var now = Date.now();
+    var waiting = false;
+    gated.forEach(function (el) {
+      var open = now >= zonedTime(el.getAttribute('data-booking-opens'));
+      if (!open) waiting = true;
+      el.querySelectorAll('[data-when]').forEach(function (part) {
+        part.hidden = part.getAttribute('data-when') !== (open ? 'after' : 'before');
+      });
+    });
+    if (!waiting) clearInterval(bookingTimer);
+  }
+  var bookingTimer = gated.length ? setInterval(updateBooking, 30000) : null;
+  if (gated.length) updateBooking();
+
   // Forms are sent to Netlify Forms, which collects the submissions
   function showThanks(form) {
     var card = form.parentElement;

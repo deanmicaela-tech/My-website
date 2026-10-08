@@ -548,6 +548,9 @@ a:hover { color: var(--ink); }
 }
 .reserve-form { display: grid; gap: 22px; }
 .fine-print { font-size: 0.875rem; color: var(--ink-soft); }
+.booking-soon { display: grid; gap: 10px; }
+.booking-soon-date { font-family: var(--font-display); font-variation-settings: "SOFT" 100; font-size: 1.375rem; color: var(--ink); }
+[hidden] { display: none !important; }
 
 /* Event pages: photo on the left, details, price and booking form on the right */
 .event-layout {
