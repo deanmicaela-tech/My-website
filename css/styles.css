@@ -610,13 +610,14 @@ a:hover { color: var(--ink); }
 .mat-map { margin: 0; padding: 0; border: 0; min-width: 0; display: grid; gap: 12px; }
 .mat-map legend { padding: 0; margin-bottom: 4px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink); }
 .mat-map .fine-print { margin: 0; }
+.mat-side { margin: 0; text-align: center; font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-soft); }
 .mat-instructor {
   justify-self: center;
-  padding: 6px 22px;
-  border-radius: 999px;
-  background: var(--cream);
+  display: grid; justify-items: center; gap: 6px;
+  margin-bottom: 14px;
   font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--berry);
 }
+.mat-instructor-mat { width: 96px; height: 30px; border-radius: 6px; background: var(--cream); border: 1px solid var(--rose); }
 .mat-grid { display: grid; grid-template-columns: 12px repeat(var(--per-row, 14), minmax(0, 1fr)); gap: 8px 4px; align-items: center; }
 .mat-row-label { font-size: 0.6875rem; font-weight: 500; color: var(--ink-soft); text-align: center; }
 .mat {
