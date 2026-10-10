@@ -7,7 +7,7 @@ export const EVENTS = {
   'sunrise-beach-pilates': {
     rows: ['A', 'B', 'C'],
     perRow: 14,
-    opens: Date.parse('2026-10-31T11:00:00Z'), // Sat, Oct 31, 7:00 AM Eastern
+    opens: Date.parse('2026-11-07T12:00:00Z'), // Sat, Nov 7, 7:00 AM Eastern (EST)
     maxPerBooking: 4
   }
 };
