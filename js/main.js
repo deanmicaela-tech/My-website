@@ -70,6 +70,120 @@
   var bookingTimer = gated.length ? setInterval(updateBooking, 30000) : null;
   if (gated.length) updateBooking();
 
+  // Mat map: visitors pick their own mats. Taken mats come from /api/mats,
+  // which also makes sure two people can't book the same mat.
+  var matMaps = [];
+  document.querySelectorAll('[data-mat-map]').forEach(function (box) {
+    var slug = box.getAttribute('data-mat-map');
+    var rows = box.getAttribute('data-rows').split(',');
+    var perRow = +box.getAttribute('data-per-row');
+    var max = +box.getAttribute('data-max');
+    var grid = box.querySelector('.mat-grid');
+    var label = box.querySelector('.mat-picked');
+    var form = box.closest('form');
+    var picked = [];
+    var taken = {};
+    var buttons = {};
+
+    grid.style.setProperty('--per-row', perRow);
+    rows.forEach(function (row) {
+      var tag = document.createElement('span');
+      tag.className = 'mat-row-label';
+      tag.textContent = row;
+      tag.setAttribute('aria-hidden', 'true');
+      grid.appendChild(tag);
+      for (var i = 1; i <= perRow; i++) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'mat';
+        b.value = row + i;
+        b.textContent = i;
+        b.setAttribute('aria-pressed', 'false');
+        b.setAttribute('aria-label', 'Row ' + row + ', mat ' + i);
+        buttons[row + i] = b;
+        grid.appendChild(b);
+      }
+    });
+
+    function render() {
+      Object.keys(buttons).forEach(function (mat) {
+        var b = buttons[mat];
+        var mine = picked.indexOf(mat) !== -1;
+        b.classList.toggle('is-taken', !!taken[mat]);
+        b.classList.toggle('is-picked', mine);
+        b.disabled = !!taken[mat];
+        b.setAttribute('aria-pressed', mine ? 'true' : 'false');
+      });
+      form.elements.mats.value = picked.join(', ');
+      form.elements.spots.value = picked.length || '';
+      label.textContent = picked.length
+        ? 'Your mat' + (picked.length > 1 ? 's' : '') + ': ' + picked.join(', ')
+        : 'No mat chosen yet.';
+    }
+
+    grid.addEventListener('click', function (e) {
+      var b = e.target.closest('.mat');
+      if (!b || b.disabled) return;
+      var at = picked.indexOf(b.value);
+      if (at !== -1) picked.splice(at, 1);
+      else if (picked.length < max) picked.push(b.value);
+      else { label.textContent = 'You can pick up to ' + max + ' mats per booking.'; return; }
+      render();
+    });
+
+    function refresh() {
+      return fetch('/api/mats?event=' + encodeURIComponent(slug), { cache: 'no-store' })
+        .then(function (res) { return res.ok ? res.json() : null; })
+        .then(function (data) { if (data) setTaken(data.taken); })
+        .catch(function () {});
+    }
+    function setTaken(list) {
+      taken = {};
+      list.forEach(function (mat) { taken[mat] = true; });
+      var lost = picked.filter(function (mat) { return taken[mat]; });
+      picked = picked.filter(function (mat) { return !taken[mat]; });
+      render();
+      return lost;
+    }
+
+    matMaps.push({ form: form, slug: slug, picked: function () { return picked.slice(); }, setTaken: setTaken });
+    render();
+    refresh();
+    setInterval(function () { if (!form.hidden && document.visibilityState === 'visible') refresh(); }, 20000);
+  });
+
+  // Reserve the chosen mats before the booking request goes to Netlify Forms
+  function matError(message) {
+    var err = new Error(message);
+    err.show = true;
+    return err;
+  }
+  function claimMats(form) {
+    var map = matMaps.filter(function (m) { return m.form === form; })[0];
+    if (!map) return Promise.resolve();
+    var mats = map.picked();
+    if (!mats.length) return Promise.reject(matError('Please choose your mat on the map above.'));
+    if (form.dataset.claimed === mats.join(',')) return Promise.resolve();
+    return fetch('/api/mats', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        event: map.slug, mats: mats,
+        name: form.elements.name.value, email: form.elements.email.value,
+        phone: form.elements.phone.value, 'bot-field': form.elements['bot-field'].value
+      })
+    }).then(function (res) {
+      return res.json().catch(function () { return {}; }).then(function (data) {
+        if (res.status === 409) {
+          var lost = map.setTaken(data.taken || []);
+          throw matError('Sorry, someone just booked ' + (lost.join(', ') || 'that mat') + '. Please pick another mat.');
+        }
+        if (!res.ok) throw new Error('Request failed');
+        form.dataset.claimed = mats.join(',');
+      });
+    });
+  }
+
   // Forms are sent to Netlify Forms, which collects the submissions
   function showThanks(form) {
     var card = form.parentElement;
@@ -95,18 +209,23 @@
       button.disabled = true;
       status.textContent = 'Sending...';
 
-      fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(new FormData(form)).toString()
-      })
+      claimMats(form)
+        .then(function () {
+          return fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(new FormData(form)).toString()
+          });
+        })
         .then(function (res) {
           if (!res.ok) throw new Error('Request failed');
           showThanks(form);
         })
-        .catch(function () {
+        .catch(function (err) {
           button.disabled = false;
-          status.textContent = 'This could not be sent. Please try again, or email us at orvellawellness@gmail.com.';
+          status.textContent = err.show
+            ? err.message
+            : 'This could not be sent. Please try again, or email us at orvellawellness@gmail.com.';
         });
     });
   });

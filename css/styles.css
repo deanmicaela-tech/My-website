@@ -606,6 +606,43 @@ a:hover { color: var(--ink); }
 }
 .hidden-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
+/* Mat map on event pages: 3 rows of mats facing the instructor */
+.mat-map { margin: 0; padding: 0; border: 0; min-width: 0; display: grid; gap: 12px; }
+.mat-map legend { padding: 0; margin-bottom: 4px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink); }
+.mat-map .fine-print { margin: 0; }
+.mat-instructor {
+  justify-self: center;
+  padding: 6px 22px;
+  border-radius: 999px;
+  background: var(--cream);
+  font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--berry);
+}
+.mat-grid { display: grid; grid-template-columns: 12px repeat(var(--per-row, 14), minmax(0, 1fr)); gap: 8px 4px; align-items: center; }
+.mat-row-label { font-size: 0.6875rem; font-weight: 500; color: var(--ink-soft); text-align: center; }
+.mat {
+  display: grid; place-items: end center;
+  min-width: 0; height: 48px; padding: 0 0 5px;
+  border: 1px solid var(--rose); border-radius: 6px;
+  background: var(--blush);
+  font: inherit; font-size: 0.6875rem; line-height: 1; color: var(--ink-soft);
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+.mat:hover { border-color: var(--berry); }
+.mat:focus-visible { outline: 2px solid var(--berry); outline-offset: 2px; }
+.mat.is-picked { background: var(--berry); border-color: var(--berry); color: var(--white); }
+.mat.is-taken { background: var(--line); border-color: var(--line); color: transparent; cursor: not-allowed; opacity: 0.55; }
+.mat-key { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; font-size: 0.8125rem; color: var(--ink-soft); }
+.mat-key li { display: flex; align-items: center; gap: 6px; }
+.mat-swatch { width: 10px; height: 16px; border-radius: 3px; border: 1px solid var(--rose); background: var(--blush); }
+.mat-swatch.is-picked { background: var(--berry); border-color: var(--berry); }
+.mat-swatch.is-taken { background: var(--line); border-color: var(--line); opacity: 0.55; }
+.mat-picked { margin: 0; text-align: center; font-family: var(--font-display); font-variation-settings: "SOFT" 100; font-size: 1.0625rem; color: var(--ink); }
+@media (max-width: 560px) {
+  .mat-grid { grid-template-columns: 10px repeat(var(--per-row, 14), minmax(0, 1fr)); gap: 8px 2px; }
+  .mat { height: 44px; border-radius: 4px; font-size: 0.625rem; padding-bottom: 4px; }
+}
+
 /* ---------- Footer ---------- */
 .site-footer {
   position: relative;

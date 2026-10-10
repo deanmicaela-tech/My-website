@@ -74,7 +74,7 @@
           <h1 class="event-title">Sunrise Beach Pilates</h1>
           <p class="event-when">Saturday, November 7 · 7:00 – 8:30 AM</p>
         </header>
-        <p class="event-price"><span class="price">$25</span> per person · 40 spots</p>
+        <p class="event-price"><span class="price">$36</span> per person · 42 spots</p>
         <p class="event-lead">start your morning with the ocean. a slow, grounding pilates flow and guided breathwork as the sun rises, followed by time to connect with the community.</p>
         <ul class="event-summary">
           <li>Sat, Nov 7 · 7:00 – 8:30 AM</li>
@@ -109,16 +109,22 @@
                 <label for="rf-phone">Phone <span class="optional">(optional)</span></label>
                 <input id="rf-phone" name="phone" type="tel" autocomplete="tel">
               </div>
-              <div class="field">
-                <label for="rf-spots">Number of spots</label>
-                <select id="rf-spots" name="spots">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                </select>
-              </div>
             </div>
+            <!-- Mat map: taken mats are shared through /api/mats (netlify/functions/mats.mjs) -->
+            <fieldset class="mat-map" data-mat-map="sunrise-beach-pilates" data-rows="A,B,C" data-per-row="14" data-max="4">
+              <legend>Choose your mat</legend>
+              <p class="fine-print">Tap a mat to pick it, up to 4 so you can sit next to your friends.</p>
+              <div class="mat-instructor">Instructor</div>
+              <div class="mat-grid" role="group" aria-label="Mats, 3 rows of 14"></div>
+              <ul class="mat-key" aria-hidden="true">
+                <li><span class="mat-swatch"></span>Open</li>
+                <li><span class="mat-swatch is-picked"></span>Yours</li>
+                <li><span class="mat-swatch is-taken"></span>Taken</li>
+              </ul>
+              <p class="mat-picked" aria-live="polite">No mat chosen yet.</p>
+              <input type="hidden" name="mats" value="">
+              <input type="hidden" name="spots" value="">
+            </fieldset>
             <div class="field">
               <label for="rf-notes">Anything we should know? <span class="optional">(optional)</span></label>
               <textarea id="rf-notes" name="notes" rows="3" placeholder="First class, an injury, a friend joining you..."></textarea>
