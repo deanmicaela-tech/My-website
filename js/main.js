@@ -25,6 +25,13 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  // Header account link says "Account" once someone is logged in
+  // (Supabase keeps the login in this browser's storage as sb-...-auth-token)
+  try {
+    var loggedIn = Object.keys(localStorage).some(function (k) { return /^sb-.+-auth-token$/.test(k); });
+    if (loggedIn) document.querySelectorAll('[data-account-link]').forEach(function (a) { a.textContent = 'Account'; });
+  } catch (e) {}
+
   // Footer year
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
