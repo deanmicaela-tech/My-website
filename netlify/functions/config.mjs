@@ -3,13 +3,14 @@
 // Set them in Netlify > Project configuration > Environment variables:
 //   SUPABASE_URL       e.g. https://abcdefgh.supabase.co
 //   SUPABASE_ANON_KEY  Supabase > Project Settings > API keys > anon / publishable key
+//                      (also read as SUPABASE_ANON)
 // Never put the service_role / secret key here.
 
 export default () =>
   new Response(
     JSON.stringify({
       supabaseUrl: process.env.SUPABASE_URL || '',
-      supabaseAnonKey: process.env.SUPABASE_ANON_KEY || ''
+      supabaseAnonKey: process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_ANON || ''
     }),
     { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' } }
   );
