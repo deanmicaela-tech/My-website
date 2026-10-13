@@ -19,6 +19,10 @@ create table if not exists public.profiles (
   phone text,
   created_at timestamptz not null default now()
 );
+-- Email / text sign-up choices (from the sign-up and profile forms) and when they were last changed
+alter table public.profiles add column if not exists email_opt_in boolean not null default false;
+alter table public.profiles add column if not exists sms_opt_in boolean not null default false;
+alter table public.profiles add column if not exists opt_in_at timestamptz;
 
 -- ---------- Events ----------
 -- id is the event page's name, e.g. 'sunrise-beach-pilates' for
@@ -65,16 +69,28 @@ create table if not exists public.favorites (
 );
 
 -- ---------- Automatic linking ----------
+create or replace function public.try_timestamptz(t text) returns timestamptz
+language plpgsql immutable set search_path = '' as $$
+begin
+  return t::timestamptz;
+exception when others then
+  return null;
+end $$;
+
 -- Keep profiles in step with accounts, and link bookings to an account once its
 -- email is confirmed (so nobody can claim bookings by signing up with someone
 -- else's email).
 create or replace function public.sync_account() returns trigger
 language plpgsql security definer set search_path = '' as $$
 begin
-  insert into public.profiles (id, first_name, email, phone)
-  values (new.id, new.raw_user_meta_data ->> 'first_name', new.email, new.raw_user_meta_data ->> 'phone')
+  insert into public.profiles (id, first_name, email, phone, email_opt_in, sms_opt_in, opt_in_at)
+  values (new.id, new.raw_user_meta_data ->> 'first_name', new.email, new.raw_user_meta_data ->> 'phone',
+          coalesce(new.raw_user_meta_data ->> 'email_opt_in', '') = 'true',
+          coalesce(new.raw_user_meta_data ->> 'sms_opt_in', '') = 'true',
+          public.try_timestamptz(new.raw_user_meta_data ->> 'opt_in_at'))
   on conflict (id) do update
-    set first_name = excluded.first_name, email = excluded.email, phone = excluded.phone;
+    set first_name = excluded.first_name, email = excluded.email, phone = excluded.phone,
+        email_opt_in = excluded.email_opt_in, sms_opt_in = excluded.sms_opt_in, opt_in_at = excluded.opt_in_at;
 
   if new.email_confirmed_at is not null then
     update public.bookings
@@ -112,8 +128,12 @@ create trigger on_booking_save
   for each row execute function public.link_booking();
 
 -- Accounts that existed before this setup was run
-insert into public.profiles (id, first_name, email, phone)
-  select id, raw_user_meta_data ->> 'first_name', email, raw_user_meta_data ->> 'phone' from auth.users
+insert into public.profiles (id, first_name, email, phone, email_opt_in, sms_opt_in, opt_in_at)
+  select id, raw_user_meta_data ->> 'first_name', email, raw_user_meta_data ->> 'phone',
+         coalesce(raw_user_meta_data ->> 'email_opt_in', '') = 'true',
+         coalesce(raw_user_meta_data ->> 'sms_opt_in', '') = 'true',
+         public.try_timestamptz(raw_user_meta_data ->> 'opt_in_at')
+  from auth.users
   on conflict (id) do nothing;
 
 -- ---------- Who can see what ----------

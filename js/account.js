@@ -51,6 +51,8 @@
     form.elements.first_name.value = meta.first_name || '';
     form.elements.phone.value = meta.phone || '';
     form.elements.email.value = user.email || '';
+    form.elements.email_opt_in.checked = meta.email_opt_in === true;
+    form.elements.sms_opt_in.checked = meta.sms_opt_in === true;
     form.querySelector('[data-greeting]').textContent = meta.first_name ? 'Hi, ' + meta.first_name : 'Your details';
     show('profile');
   }
@@ -84,6 +86,17 @@
   }
 
   function value(form, name) { return form.elements[name].value.trim(); }
+
+  // Email / text sign-up choices, saved with the account as proof of consent
+  function optIns(form) {
+    return { email_opt_in: form.elements.email_opt_in.checked, sms_opt_in: form.elements.sms_opt_in.checked };
+  }
+  function needsPhone(form) {
+    if (!form.elements.sms_opt_in.checked || value(form, 'phone')) return false;
+    form.elements.phone.focus();
+    status(form, 'Please add your phone number so we can text you.');
+    return true;
+  }
   var returnTo = location.origin + location.pathname;
 
   card.addEventListener('click', function (e) {
@@ -97,13 +110,16 @@
   });
 
   onSubmit('signup', function (form) {
+    if (needsPhone(form)) return;
     var email = value(form, 'email');
+    var data = Object.assign({ first_name: value(form, 'first_name'), phone: value(form, 'phone') }, optIns(form));
+    if (data.email_opt_in || data.sms_opt_in) data.opt_in_at = new Date().toISOString();
     return client.auth.signUp({
       email: email,
       password: form.elements.password.value,
       options: {
         emailRedirectTo: returnTo,
-        data: { first_name: value(form, 'first_name'), phone: value(form, 'phone') }
+        data: data
       }
     }).then(function (r) {
       if (r.error) throw r.error;
@@ -132,10 +148,16 @@
   });
 
   onSubmit('profile', function (form) {
+    if (needsPhone(form)) return;
     var email = value(form, 'email');
     return client.auth.getUser().then(function (r) {
       if (r.error) throw r.error;
-      var changes = { data: { first_name: value(form, 'first_name'), phone: value(form, 'phone') } };
+      var meta = r.data.user.user_metadata || {};
+      var choices = optIns(form);
+      var changes = { data: Object.assign({ first_name: value(form, 'first_name'), phone: value(form, 'phone') }, choices) };
+      if (choices.email_opt_in !== (meta.email_opt_in === true) || choices.sms_opt_in !== (meta.sms_opt_in === true)) {
+        changes.data.opt_in_at = new Date().toISOString();
+      }
       var newEmail = email.toLowerCase() !== (r.data.user.email || '').toLowerCase();
       if (newEmail) changes.email = email;
       return client.auth.updateUser(changes, { emailRedirectTo: returnTo }).then(function (u) {
