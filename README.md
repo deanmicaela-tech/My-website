@@ -34,8 +34,9 @@ events/                 one page per pop-up (details, price, photo, booking form
 netlify.toml            tells Netlify to serve the site as-is (no build step)
 css/styles.css          colours, fonts and layout
 js/main.js              mobile menu, form sending and the mat map
-account.html            member log in, sign up, password reset and profile
-js/account.js           how the account page talks to Supabase
+account.html            a member's classes attended and booked, favorites, and profile
+js/member.js            header profile icon, log in / sign up pop-up and event hearts (every page)
+js/account.js           the account page
 js/vendor/              Supabase's own browser library (copied in, don't edit)
 netlify/                the mat map's saved bookings, and /api/config for accounts (Netlify Functions)
 assets/favicon.svg      browser tab icon
@@ -60,7 +61,7 @@ Search `index.html` for these comments:
 
 ## Member accounts
 
-Members sign up and log in on `account.html` (the **Log in** link in every page's header, which says **Account** once someone is logged in). Accounts are run by [Supabase](https://supabase.com); the site keeps no passwords itself.
+Members tap the profile icon in every page's header to log in or sign up in a pop-up; once logged in, the icon goes to `account.html`, which shows how many classes they've attended and booked, their favorite pop-ups, and an *Edit profile* section. The hearts on the home page's events save favorites (logged out, a tap opens the log in pop-up). Accounts are run by [Supabase](https://supabase.com); the site keeps no passwords itself.
 
 The account page only works once these are set in Netlify under *Project configuration → Environment variables* (then redeploy):
 

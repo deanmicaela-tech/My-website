@@ -734,3 +734,60 @@ a:hover { color: var(--ink); }
 .account-card h3 { font-size: 1.5rem; font-weight: 400; }
 .account-note { color: var(--ink-soft); }
 .account-links { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; font-size: 0.9375rem; color: var(--ink-soft); }
+
+/* Header profile icon: logged out it opens the log in pop-up, logged in it goes to the account page */
+.site-nav { margin-left: auto; }
+.account-icon {
+  display: inline-grid; place-items: center; flex: none;
+  width: 40px; height: 40px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--white); color: var(--ink);
+  transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+.account-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+.account-icon:hover, .account-icon[aria-current="page"] { color: var(--berry); border-color: var(--rose); }
+.account-icon.is-member { background: var(--blush); color: var(--berry); }
+@media (max-width: 860px) {
+  .account-icon { order: 1; width: 44px; height: 44px; margin-left: auto; }
+  .menu-toggle { order: 2; margin-left: -12px; }
+}
+
+/* Log in / sign up pop-up */
+.auth-dialog { width: min(480px, calc(100vw - 32px)); }
+.auth-dialog[open] { grid-template-rows: auto minmax(0, 1fr); }
+.auth-body { padding: 20px 24px 24px; }
+.auth-body [data-auth-note] { margin-bottom: 12px; }
+.auth-body .form-thanks { padding-block: 16px; }
+
+/* Hearts on events */
+.event-actions { display: flex; align-items: center; gap: 12px; }
+.heart {
+  display: inline-grid; place-items: center; flex: none;
+  width: 40px; height: 40px; padding: 0;
+  border: 1px solid var(--line); border-radius: 50%;
+  background: var(--white); color: var(--berry); cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.heart svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; }
+.heart:hover { transform: scale(1.06); border-color: var(--rose); }
+.heart[aria-pressed="true"] { background: var(--blush); border-color: var(--rose); }
+.heart[aria-pressed="true"] svg { fill: currentColor; }
+@media (max-width: 700px) {
+  .event-actions { grid-column: 2; }
+}
+
+/* Account page: numbers and favorites */
+.account-wrap { display: grid; gap: clamp(28px, 4vw, 40px); max-width: 760px; }
+.account-dash { display: grid; gap: clamp(28px, 4vw, 40px); }
+.account-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 20px; }
+.stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 3vw, 24px); }
+.stat {
+  display: grid; justify-items: center; gap: 8px;
+  padding: clamp(24px, 5vw, 40px) 12px;
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: 0 30px 60px -48px var(--mauve); text-align: center;
+}
+.stat-number { font-family: var(--font-display); font-variation-settings: "SOFT" 100; font-size: clamp(3.25rem, 12vw, 5rem); font-weight: 300; line-height: 1; color: var(--ink); }
+.stat-label { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--berry); }
+.favorites { display: grid; gap: 16px; }
+.account-back { justify-self: start; }

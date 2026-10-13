@@ -52,9 +52,9 @@
       <a href="faq.html">Q&amp;A</a>
       <a href="collaborations.html">Collaborate</a>
       <a href="index.html#contact">Contact</a>
-      <a href="account.html" data-account-link aria-current="page">Log in</a>
       <a class="btn btn-small" href="index.html#book">Book now</a>
     </nav>
+    <a class="account-icon" href="account.html" data-account-link aria-label="Log in or sign up" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8.5" r="3.75"/><path d="M4.75 19.5c1.2-3.4 4-5.25 7.25-5.25s6.05 1.85 7.25 5.25"/></svg></a>
   </div>
 </header>
 
@@ -63,127 +63,52 @@
     <div class="wrap">
       <p class="eyebrow">Members</p>
       <h1 class="eyebrow page-title">Your Orvella</h1>
-      <p class="eyebrow">Your bookings, favorites and details in one place.</p>
+      <p class="eyebrow">Your classes and favorite pop-ups in one place.</p>
     </div>
   </section>
 
   <!-- ============ ACCOUNT ============
-       Log in, sign up, password reset and profile, all on this page (js/account.js).
+       A member's numbers and favorites, plus their profile (js/account.js).
+       Logging in and signing up happen in the pop-up from the header icon (js/member.js).
        Accounts are run by Supabase; see README.md > Member accounts. -->
   <section class="section account" id="account">
-    <div class="wrap contact-grid">
-      <div class="contact-intro">
+    <div class="wrap account-wrap">
+      <p class="account-note" data-view="loading">One moment&hellip;</p>
+
+      <p class="account-note" data-view="unavailable" hidden>Member accounts are coming soon. In the meantime, you can still <a href="index.html#events">book a pop-up</a>.</p>
+
+      <!-- Logged out -->
+      <div class="contact-intro" data-view="loggedout" hidden>
         <h2>Welcome <em class="script">back</em></h2>
-        <p>Log in to see your upcoming pop-ups, the classes you've been to and the events you've saved.</p>
+        <p>Log in to see the classes you've been to, the ones you've booked and the pop-ups you've saved.</p>
+        <p class="form-status" role="status" aria-live="polite" data-loggedout-status></p>
+        <div class="form-actions">
+          <button class="btn" type="button" data-open-auth="login">Log in</button>
+          <button class="btn btn-outline" type="button" data-open-auth="signup">Create an account</button>
+        </div>
       </div>
 
-      <div class="contact-card account-card">
-        <p class="account-note" data-view="loading">One moment&hellip;</p>
-
-        <p class="account-note" data-view="unavailable" hidden>Member accounts are coming soon. In the meantime, you can still <a href="index.html#events">book a pop-up</a>.</p>
-
-        <!-- Log in -->
-        <form class="contact-form" data-view="login" hidden novalidate>
-          <h3>Log in</h3>
-          <div class="field">
-            <label for="li-email">Email</label>
-            <input id="li-email" name="email" type="email" autocomplete="email" required>
-          </div>
-          <div class="field">
-            <label for="li-password">Password</label>
-            <input id="li-password" name="password" type="password" autocomplete="current-password" required>
-          </div>
-          <div class="form-actions">
-            <button class="btn" type="submit">Log in</button>
-            <p class="form-status" role="status" aria-live="polite"></p>
-          </div>
-          <p class="account-links">
-            <button class="link-button" type="button" data-show="forgot">Forgot your password?</button>
-            <span>New here? <button class="link-button" type="button" data-show="signup">Create an account</button></span>
-          </p>
-        </form>
-
-        <!-- Sign up -->
-        <form class="contact-form" data-view="signup" hidden novalidate>
-          <h3>Create an account</h3>
-          <div class="field-row">
-            <div class="field">
-              <label for="su-name">First name</label>
-              <input id="su-name" name="first_name" type="text" autocomplete="given-name" required>
-            </div>
-            <div class="field">
-              <label for="su-phone">Phone <span class="optional">(optional)</span></label>
-              <input id="su-phone" name="phone" type="tel" autocomplete="tel">
-            </div>
-          </div>
-          <div class="field">
-            <label for="su-email">Email</label>
-            <input id="su-email" name="email" type="email" autocomplete="email" required>
-          </div>
-          <div class="field">
-            <label for="su-password">Password <span class="optional">(at least 8 characters)</span></label>
-            <input id="su-password" name="password" type="password" autocomplete="new-password" minlength="8" required>
-          </div>
-          <div class="waiver">
-            <label class="waiver-check" for="su-email-opt">
-              <input id="su-email-opt" name="email_opt_in" type="checkbox">
-              <span>Email me Orvella news, new events and offers.</span>
-            </label>
-            <label class="waiver-check" for="su-sms-opt">
-              <input id="su-sms-opt" name="sms_opt_in" type="checkbox">
-              <span>Text me Orvella news and event updates. Msg &amp; data rates may apply. Reply STOP to opt out.</span>
-            </label>
-          </div>
-          <div class="form-actions">
-            <button class="btn" type="submit">Create account</button>
-            <p class="form-status" role="status" aria-live="polite"></p>
-          </div>
-          <p class="account-links">
-            <span>Already have an account? <button class="link-button" type="button" data-show="login">Log in</button></span>
-          </p>
-        </form>
-
-        <!-- Forgot password -->
-        <form class="contact-form" data-view="forgot" hidden novalidate>
-          <h3>Reset your password</h3>
-          <p class="account-note">Enter your email and we'll send you a link to choose a new password.</p>
-          <div class="field">
-            <label for="fp-email">Email</label>
-            <input id="fp-email" name="email" type="email" autocomplete="email" required>
-          </div>
-          <div class="form-actions">
-            <button class="btn" type="submit">Send reset link</button>
-            <p class="form-status" role="status" aria-live="polite"></p>
-          </div>
-          <p class="account-links">
-            <button class="link-button" type="button" data-show="login">Back to log in</button>
-          </p>
-        </form>
-
-        <!-- New password (after clicking the reset link in the email) -->
-        <form class="contact-form" data-view="reset" hidden novalidate>
-          <h3>Choose a new password</h3>
-          <div class="field">
-            <label for="rp-password">New password <span class="optional">(at least 8 characters)</span></label>
-            <input id="rp-password" name="password" type="password" autocomplete="new-password" minlength="8" required>
-          </div>
-          <div class="form-actions">
-            <button class="btn" type="submit">Save new password</button>
-            <p class="form-status" role="status" aria-live="polite"></p>
-          </div>
-        </form>
-
-        <!-- Check your email (after sign up or a reset request) -->
-        <div class="form-thanks" data-view="sent" hidden tabindex="-1">
-          <svg class="bow" aria-hidden="true" focusable="false"><use href="#bow"/></svg>
-          <h3>Check your email</h3>
-          <p data-sent-message></p>
-          <button class="link-button" type="button" data-show="login">Back to log in</button>
+      <!-- Logged in: numbers and favorites -->
+      <div class="account-dash" data-view="dashboard" hidden>
+        <div class="account-head">
+          <h2>Hi, <em class="script" data-first-name>there</em></h2>
+          <button class="link-button" type="button" data-show="profile">Edit profile</button>
         </div>
+        <div class="stats">
+          <div class="stat"><span class="stat-number" data-stat="attended">0</span><span class="stat-label">Classes attended</span></div>
+          <div class="stat"><span class="stat-number" data-stat="booked">0</span><span class="stat-label">Classes booked</span></div>
+        </div>
+        <div class="favorites">
+          <h3>Your favorites</h3>
+          <ol class="event-list" data-favorites hidden></ol>
+          <p class="account-note" data-favorites-empty hidden>No favorites yet. Tap the heart on any <a href="index.html#events">pop-up</a> to save it here.</p>
+        </div>
+      </div>
 
-        <!-- Profile (logged in) -->
-        <form class="contact-form" data-view="profile" hidden novalidate>
-          <h3 data-greeting>Your details</h3>
+      <!-- Edit profile -->
+      <div class="contact-card account-card" data-view="profile" hidden>
+        <form class="contact-form" novalidate data-profile>
+          <h3>Your profile</h3>
           <div class="field-row">
             <div class="field">
               <label for="pr-name">First name</label>
@@ -197,6 +122,10 @@
           <div class="field">
             <label for="pr-email">Email</label>
             <input id="pr-email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="pr-password">New password <span class="optional">(leave empty to keep your current one)</span></label>
+            <input id="pr-password" name="password" type="password" autocomplete="new-password" minlength="8">
           </div>
           <div class="waiver">
             <label class="waiver-check" for="pr-email-opt">
@@ -213,6 +142,22 @@
             <button class="btn btn-outline" type="button" data-logout>Log out</button>
           </div>
           <p class="form-status" role="status" aria-live="polite"></p>
+          <button class="link-button account-back" type="button" data-show="dashboard">Back to your account</button>
+        </form>
+      </div>
+
+      <!-- New password (after clicking the reset link in the email) -->
+      <div class="contact-card account-card" data-view="reset" hidden>
+        <form class="contact-form" novalidate data-reset>
+          <h3>Choose a new password</h3>
+          <div class="field">
+            <label for="rp-password">New password <span class="optional">(at least 8 characters)</span></label>
+            <input id="rp-password" name="password" type="password" autocomplete="new-password" minlength="8" required>
+          </div>
+          <div class="form-actions">
+            <button class="btn" type="submit">Save new password</button>
+            <p class="form-status" role="status" aria-live="polite"></p>
+          </div>
         </form>
       </div>
     </div>
@@ -259,6 +204,7 @@
 <!-- BODY:END -->
 
 <script src="js/main.js"></script>
+<script src="js/member.js"></script>
 <script src="js/account.js"></script>
 </body>
 </html>

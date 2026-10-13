@@ -1,215 +1,179 @@
-// Member accounts on account.html: log in, sign up, password reset, profile and log out.
-// Accounts live in Supabase. The browser only ever gets the public URL and
-// "anon" key, from /api/config (netlify/functions/config.mjs).
+// The account page: a member's numbers (classes attended and booked), their
+// favorite pop-ups, and their profile. Logging in and signing up happen in the
+// pop-up from js/member.js, which also provides Orvella.getClient and the form helpers.
 (function () {
-  var card = document.querySelector('.account-card');
-  if (!card) return;
+  var page = document.querySelector('.account-wrap');
+  var Orvella = window.Orvella;
+  if (!page || !Orvella) return;
 
-  var views = card.querySelectorAll('[data-view]');
-  var intro = document.querySelector('.contact-intro');
-  var client = null;
-  var recovering = /type=recovery/.test(location.hash);
-
-  function show(name, userAction) {
-    views.forEach(function (v) { v.hidden = v.getAttribute('data-view') !== name; });
-    card.querySelectorAll('.form-status').forEach(function (s) { s.textContent = ''; });
-    var loggedIn = name === 'profile';
-    intro.querySelector('h2').innerHTML = loggedIn ? 'Your <em class="script">details</em>' : 'Welcome <em class="script">back</em>';
-    intro.querySelector('p').textContent = loggedIn
-      ? 'Keep your name, email and phone up to date so we can reach you about your pop-ups.'
-      : "Log in to see your upcoming pop-ups, the classes you've been to and the events you've saved.";
-    document.querySelectorAll('[data-account-link]').forEach(function (a) { a.textContent = loggedIn ? 'Account' : 'Log in'; });
-    // Only when someone switches screens (focusing on page load would pop up a phone keyboard)
-    var first = card.querySelector('[data-view="' + name + '"] input');
-    if (first && userAction) first.focus();
-  }
-
-  function status(form, text) {
-    form.querySelector('.form-status').textContent = text;
-  }
-
-  function friendly(error) {
-    var m = (error && error.message) || '';
-    if (/invalid login credentials/i.test(m)) return "That email and password don't match. Try again or reset your password.";
-    if (/email not confirmed/i.test(m)) return 'Please confirm your email first. Check your inbox for the link we sent.';
-    if (/already registered|already exists/i.test(m)) return 'There is already an account with that email. Try logging in.';
-    if (/rate limit|too many|security purposes/i.test(m)) return 'Too many tries. Please wait a minute and try again.';
-    if (/password/i.test(m) && /least|short|weak/i.test(m)) return 'Please choose a password with at least 8 characters.';
-    if (/same.*password|different from the old/i.test(m)) return 'Please choose a password different from your old one.';
-    return m || 'Something went wrong. Please try again.';
-  }
-
-  function sent(message) {
-    card.querySelector('[data-sent-message]').textContent = message;
-    show('sent');
-    card.querySelector('[data-view="sent"]').focus();
-  }
-
-  function fillProfile(user) {
-    var form = card.querySelector('[data-view="profile"]');
-    var meta = user.user_metadata || {};
-    form.elements.first_name.value = meta.first_name || '';
-    form.elements.phone.value = meta.phone || '';
-    form.elements.email.value = user.email || '';
-    form.elements.email_opt_in.checked = meta.email_opt_in === true;
-    form.elements.sms_opt_in.checked = meta.sms_opt_in === true;
-    form.querySelector('[data-greeting]').textContent = meta.first_name ? 'Hi, ' + meta.first_name : 'Your details';
-    show('profile');
-  }
-
-  function busy(form, on) {
-    form.querySelectorAll('button').forEach(function (b) { b.disabled = on; });
-  }
-
-  // Basic checks before anything is sent; returns an error message or ''
-  function check(form) {
-    var bad = Array.prototype.filter.call(form.elements, function (el) { return el.willValidate && !el.checkValidity(); })[0];
-    if (!bad) return '';
-    bad.focus();
-    if (bad.type === 'email') return 'Please enter a valid email address.';
-    if (bad.type === 'password') return 'Please choose a password with at least 8 characters.';
-    return 'Please fill in your ' + bad.labels[0].firstChild.textContent.trim().toLowerCase() + '.';
-  }
-
-  function onSubmit(name, handler) {
-    var form = card.querySelector('[data-view="' + name + '"]');
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var problem = check(form);
-      if (problem) return status(form, problem);
-      status(form, '');
-      busy(form, true);
-      Promise.resolve(handler(form))
-        .catch(function (err) { status(form, friendly(err)); })
-        .then(function () { busy(form, false); });
-    });
-  }
-
-  function value(form, name) { return form.elements[name].value.trim(); }
-
-  // Email / text sign-up choices, saved with the account as proof of consent
-  function optIns(form) {
-    return { email_opt_in: form.elements.email_opt_in.checked, sms_opt_in: form.elements.sms_opt_in.checked };
-  }
-  function needsPhone(form) {
-    if (!form.elements.sms_opt_in.checked || value(form, 'phone')) return false;
-    form.elements.phone.focus();
-    status(form, 'Please add your phone number so we can text you.');
-    return true;
-  }
+  var forms = Orvella.forms;
+  var views = page.querySelectorAll('[data-view]');
+  var profileForm = page.querySelector('[data-profile]');
+  var resetForm = page.querySelector('[data-reset]');
   var returnTo = location.origin + location.pathname;
+  var client = null;
 
-  card.addEventListener('click', function (e) {
-    var b = e.target.closest('[data-show]');
-    if (b) show(b.getAttribute('data-show'), true);
-  });
+  function show(name) {
+    views.forEach(function (v) { v.hidden = v.getAttribute('data-view') !== name; });
+    page.querySelectorAll('.form-status').forEach(function (s) { s.textContent = ''; });
+  }
 
-  onSubmit('login', function (form) {
-    return client.auth.signInWithPassword({ email: value(form, 'email'), password: form.elements.password.value })
-      .then(function (r) { if (r.error) throw r.error; fillProfile(r.data.user); });
-  });
-
-  onSubmit('signup', function (form) {
-    if (needsPhone(form)) return;
-    var email = value(form, 'email');
-    var data = Object.assign({ first_name: value(form, 'first_name'), phone: value(form, 'phone') }, optIns(form));
-    if (data.email_opt_in || data.sms_opt_in) data.opt_in_at = new Date().toISOString();
-    return client.auth.signUp({
-      email: email,
-      password: form.elements.password.value,
-      options: {
-        emailRedirectTo: returnTo,
-        data: data
-      }
-    }).then(function (r) {
-      if (r.error) throw r.error;
-      if (r.data.session) return fillProfile(r.data.user);
-      sent('We sent a link to ' + email + '. Click it to confirm your email, and you will be logged in.');
+  // ---------- Numbers and favorites ----------
+  var TIME_ZONE = 'America/New_York';
+  function dateParts(iso) {
+    var parts = {};
+    new Intl.DateTimeFormat('en-US', { timeZone: TIME_ZONE, month: 'short', day: 'numeric', weekday: 'short' })
+      .formatToParts(new Date(iso)).forEach(function (p) { parts[p.type] = p.value; });
+    return parts;
+  }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function favoriteItem(ev) {
+    var li = el('li', 'event');
+    var date;
+    if (ev.starts_at) {
+      var d = dateParts(ev.starts_at);
+      date = el('time', 'event-date');
+      date.setAttribute('datetime', ev.starts_at);
+      date.append(el('span', 'event-month', d.month), el('span', 'event-day', d.day), el('span', 'event-weekday', d.weekday));
+    } else {
+      date = el('p', 'event-date');
+      date.append(el('span', 'event-month', 'Coming'), el('span', 'event-weekday', 'soon'));
+    }
+    var info = el('div', 'event-info');
+    info.append(el('h3', null, ev.title));
+    if (ev.location) info.append(el('p', 'event-meta', ev.location));
+    var actions = el('div', 'event-actions');
+    var heart = el('button', 'heart');
+    heart.type = 'button';
+    heart.setAttribute('aria-pressed', 'true');
+    heart.setAttribute('aria-label', 'Remove ' + ev.title + ' from your favorites');
+    heart.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7.5-4.6-7.5-10A4.25 4.25 0 0 1 12 7.2 4.25 4.25 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/></svg>';
+    heart.addEventListener('click', function () {
+      Orvella.setFavorite(ev.id, false).then(loadDashboard);
     });
-  });
+    var link = el('a', 'btn btn-small btn-outline', 'View');
+    link.href = 'events/' + ev.id + '.html';
+    actions.append(heart, link);
+    li.append(date, info, actions);
+    return li;
+  }
 
-  onSubmit('forgot', function (form) {
-    var email = value(form, 'email');
-    return client.auth.resetPasswordForEmail(email, { redirectTo: returnTo })
-      .then(function (r) {
-        if (r.error) throw r.error;
-        sent('If there is an account for ' + email + ', we sent it a link to choose a new password.');
+  function loadDashboard() {
+    return Promise.all([
+      client.from('bookings').select('status'),
+      client.from('favorites').select('event_id, events (id, title, starts_at, location)')
+    ]).then(function (r) {
+      var bookings = r[0].data || [];
+      page.querySelector('[data-stat="attended"]').textContent = bookings.filter(function (b) { return b.status === 'attended'; }).length;
+      page.querySelector('[data-stat="booked"]').textContent = bookings.filter(function (b) { return b.status === 'booked'; }).length;
+
+      // Soonest first; "Coming soon" events (no date yet) at the end
+      var events = (r[1].data || []).map(function (f) { return f.events; }).filter(Boolean);
+      events.sort(function (a, b) {
+        if (!a.starts_at || !b.starts_at) return a.starts_at ? -1 : b.starts_at ? 1 : a.title.localeCompare(b.title);
+        return a.starts_at < b.starts_at ? -1 : 1;
       });
+      var list = page.querySelector('[data-favorites]');
+      list.replaceChildren.apply(list, events.map(favoriteItem));
+      list.hidden = !events.length;
+      page.querySelector('[data-favorites-empty]').hidden = !!events.length;
+    });
+  }
+
+  function showDashboard(user) {
+    var meta = user.user_metadata || {};
+    page.querySelector('[data-first-name]').textContent = meta.first_name || 'there';
+    show('dashboard');
+    return loadDashboard();
+  }
+
+  // ---------- Profile ----------
+  function fillProfile(user) {
+    var meta = user.user_metadata || {};
+    profileForm.elements.first_name.value = meta.first_name || '';
+    profileForm.elements.phone.value = meta.phone || '';
+    profileForm.elements.email.value = user.email || '';
+    profileForm.elements.password.value = '';
+    profileForm.elements.email_opt_in.checked = meta.email_opt_in === true;
+    profileForm.elements.sms_opt_in.checked = meta.sms_opt_in === true;
+  }
+
+  page.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-show]');
+    if (b) {
+      var name = b.getAttribute('data-show');
+      if (name === 'profile') {
+        client.auth.getUser().then(function (r) { if (r.data.user) fillProfile(r.data.user); show('profile'); });
+      } else {
+        client.auth.getUser().then(function (r) { if (r.data.user) showDashboard(r.data.user); });
+      }
+      return;
+    }
+    var a = e.target.closest('[data-open-auth]');
+    if (a) Orvella.openAuth({ view: a.getAttribute('data-open-auth'), then: start });
   });
 
-  onSubmit('reset', function (form) {
-    return client.auth.updateUser({ password: form.elements.password.value })
-      .then(function (r) {
-        if (r.error) throw r.error;
-        recovering = false;
-        fillProfile(r.data.user);
-        status(card.querySelector('[data-view="profile"]'), 'Your new password is saved.');
-      });
-  });
-
-  onSubmit('profile', function (form) {
-    if (needsPhone(form)) return;
-    var email = value(form, 'email');
+  forms.onSubmit(profileForm, function (form) {
+    if (forms.needsPhone(form)) return;
+    var email = forms.value(form, 'email');
     return client.auth.getUser().then(function (r) {
       if (r.error) throw r.error;
       var meta = r.data.user.user_metadata || {};
-      var choices = optIns(form);
-      var changes = { data: Object.assign({ first_name: value(form, 'first_name'), phone: value(form, 'phone') }, choices) };
+      var choices = forms.optIns(form);
+      var changes = { data: Object.assign({ first_name: forms.value(form, 'first_name'), phone: forms.value(form, 'phone') }, choices) };
       if (choices.email_opt_in !== (meta.email_opt_in === true) || choices.sms_opt_in !== (meta.sms_opt_in === true)) {
         changes.data.opt_in_at = new Date().toISOString();
       }
       var newEmail = email.toLowerCase() !== (r.data.user.email || '').toLowerCase();
       if (newEmail) changes.email = email;
+      var newPassword = form.elements.password.value;
+      if (newPassword) changes.password = newPassword;
       return client.auth.updateUser(changes, { emailRedirectTo: returnTo }).then(function (u) {
         if (u.error) throw u.error;
         fillProfile(u.data.user);
         if (newEmail) form.elements.email.value = email;
-        status(form, newEmail
+        forms.status(form, newEmail
           ? 'Saved. To change your email, click the link we sent to ' + email + ' (and to your old email too).'
-          : 'Saved.');
+          : newPassword ? 'Saved, including your new password.' : 'Saved.');
       });
     });
   });
 
-  card.querySelector('[data-logout]').addEventListener('click', function () {
-    client.auth.signOut().then(function () { show('login'); });
+  page.querySelector('[data-logout]').addEventListener('click', function () {
+    client.auth.signOut().then(function () { show('loggedout'); });
   });
 
-  function loadScript(src) {
-    return new Promise(function (resolve, reject) {
-      var s = document.createElement('script');
-      s.src = src;
-      s.onload = resolve;
-      s.onerror = reject;
-      document.head.appendChild(s);
+  forms.onSubmit(resetForm, function (form) {
+    return client.auth.updateUser({ password: form.elements.password.value }).then(function (r) {
+      if (r.error) throw r.error;
+      Orvella.recovering = false;
+      fillProfile(r.data.user);
+      show('profile');
+      forms.status(profileForm, 'Your new password is saved.');
+    });
+  });
+  document.addEventListener('orvella:recovery', function () { show('reset'); });
+
+  // ---------- Start ----------
+  function start() {
+    return Orvella.getSession().then(function (session) {
+      if (session && Orvella.recovering) return show('reset');
+      if (session) return showDashboard(session.user);
+      show('loggedout');
+      // An old or already-used link from one of our emails
+      if (/error_description=/.test(location.hash)) {
+        page.querySelector('[data-loggedout-status]').textContent = 'That link has expired or was already used. Log in, or reset your password to get a new link.';
+        history.replaceState(null, '', returnTo + location.search);
+      }
     });
   }
 
-  fetch('/api/config')
-    .then(function (r) { return r.ok ? r.json() : {}; })
-    .then(function (cfg) {
-      if (!cfg.supabaseUrl || !cfg.supabaseAnonKey) throw new Error('not set up');
-      return loadScript('js/vendor/supabase-2.117.2.js').then(function () {
-        client = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
-          auth: { flowType: 'implicit', persistSession: true, detectSessionInUrl: true }
-        });
-        client.auth.onAuthStateChange(function (event) {
-          if (event === 'PASSWORD_RECOVERY') { recovering = true; show('reset'); }
-        });
-        return client.auth.getSession();
-      });
-    })
-    .then(function (r) {
-      var session = r.data && r.data.session;
-      var params = new URLSearchParams(location.search);
-      if (session && recovering) show('reset');
-      else if (session) fillProfile(session.user);
-      else show(params.get('view') === 'signup' ? 'signup' : 'login');
-      // An old or already-used link from one of our emails
-      if (!session && /error_description=/.test(location.hash)) {
-        status(card.querySelector('[data-view="login"]'), 'That link has expired or was already used. Log in, or reset your password to get a new link.');
-        history.replaceState(null, '', returnTo + location.search);
-      }
-    })
+  Orvella.getClient()
+    .then(function (c) { client = c; return start(); })
     .catch(function () { show('unavailable'); });
 })();
