@@ -34,7 +34,10 @@ events/                 one page per pop-up (details, price, photo, booking form
 netlify.toml            tells Netlify to serve the site as-is (no build step)
 css/styles.css          colours, fonts and layout
 js/main.js              mobile menu, form sending and the mat map
-netlify/                the mat map's saved bookings (a Netlify Function)
+account.html            member log in, sign up, password reset and profile
+js/account.js           how the account page talks to Supabase
+js/vendor/              Supabase's own browser library (copied in, don't edit)
+netlify/                the mat map's saved bookings, and /api/config for accounts (Netlify Functions)
 assets/favicon.svg      browser tab icon
 assets/orvella-wordmark.svg  your logo as a crisp vector (traced from the logo image)
 assets/orvella-logo.jpg      the original logo image
@@ -54,6 +57,21 @@ Search `index.html` for these comments:
 - **Mat map (Sunrise Beach Pilates)**: guests pick their own mats on a map of 3 rows of 15 (A1 to C15, row A at the front nearest the instructor, row C at the back), one per booking (each booking is for one person; set by `data-max` on the map and `maxPerBooking` in `mats-core.mjs`). Their mats are listed in the "mats" field of the booking email. Taken mats are saved in Netlify under *Blobs → mat-bookings*, one entry per mat (for example `sunrise-beach-pilates/B7`, which also shows who booked it). If someone cancels, delete their mat entries there and the mats show as open again. The mat code is `netlify/functions/mats.mjs` and `netlify/lib/mats-core.mjs` (the layout and booking opening time for the server are set at the top of `mats-core.mjs`).
 - **Waiver (Sunrise Beach Pilates)**: guests must tick "I have read and agree to the waiver and policies" before booking. The full waiver opens in a pop-up from the checkbox; its wording is in the event page (search for `WAIVER`). Each booking email shows `waiver: Agreed`, and the saved mat entry records `waiverAgreed`.
 - **Copy**: all wording, including the Q&A answers, is a starting point. Change anything that doesn't sound like you or isn't accurate.
+
+## Member accounts
+
+Members sign up and log in on `account.html` (the **Log in** link in every page's header, which says **Account** once someone is logged in). Accounts are run by [Supabase](https://supabase.com); the site keeps no passwords itself.
+
+The account page only works once these are set in Netlify under *Project configuration → Environment variables* (then redeploy):
+
+| Name | Where to find it |
+| --- | --- |
+| `SUPABASE_URL` | Supabase → Project Settings → API (Project URL) |
+| `SUPABASE_ANON_KEY` | Supabase → Project Settings → API keys (the *anon* / *publishable* key) |
+
+Both are public by design. Never put the *service_role* / *secret* key in the site's code. Until they are set, the account page says member accounts are coming soon.
+
+In Supabase, under *Authentication → URL Configuration*, set the Site URL to `https://orvellawellness.com` and add `https://orvellawellness.com/account.html` to the Redirect URLs, so the confirmation and password-reset emails link back to the site.
 
 ## Brand
 
