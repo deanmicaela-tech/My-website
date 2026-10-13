@@ -52,9 +52,9 @@
       <a href="faq.html">Q&amp;A</a>
       <a href="collaborations.html">Collaborate</a>
       <a href="#contact">Contact</a>
-      <a href="account.html" data-account-link>Log in</a>
       <a class="btn btn-small" href="#book">Book now</a>
     </nav>
+    <a class="account-icon" href="account.html" data-account-link aria-label="Log in or sign up"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8.5" r="3.75"/><path d="M4.75 19.5c1.2-3.4 4-5.25 7.25-5.25s6.05 1.85 7.25 5.25"/></svg></a>
   </div>
 </header>
 
@@ -101,7 +101,8 @@
        To add an event: copy one <li class="event"> ... </li> block and change the date, title, time and text.
        To remove one: delete its whole <li> block.
        Each event has its own page in the events/ folder (details, price, photo and booking form);
-       the Reserve button links to it. -->
+       the Reserve button links to it. The heart's data-favorite is that page's file name
+       (without .html), and the event needs a row with that id in Supabase's events table. -->
   <section class="section events" id="events">
     <div class="wrap events-layout">
       <header class="section-head">
@@ -120,7 +121,10 @@
               <p class="event-meta">7:00 – 8:30 AM · 45 spots · Location announced soon</p>
               <p class="event-desc">start your morning with the ocean. a slow, grounding pilates flow and guided breathwork as the sun rises, followed by time to connect with the community.</p>
             </div>
-            <a class="btn btn-small btn-outline" href="events/sunrise-beach-pilates.html">Reserve</a>
+            <div class="event-actions">
+              <button class="heart" type="button" data-favorite="sunrise-beach-pilates" aria-pressed="false" aria-label="Save Sunrise Beach Pilates to your favorites"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7.5-4.6-7.5-10A4.25 4.25 0 0 1 12 7.2 4.25 4.25 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/></svg></button>
+              <a class="btn btn-small btn-outline" href="events/sunrise-beach-pilates.html">Reserve</a>
+            </div>
           </li>
           <li class="event">
             <p class="event-date"><span class="event-month">Coming</span><span class="event-weekday">soon</span></p>
@@ -128,7 +132,10 @@
               <h3>Matcha &amp; Pilates</h3>
               <p class="event-desc">slow mornings, green rituals. flow through a gentle pilates class then unwind with a freshly whisked matcha and good company.</p>
             </div>
-            <a class="btn btn-small btn-outline" href="events/matcha-and-pilates.html">Reserve</a>
+            <div class="event-actions">
+              <button class="heart" type="button" data-favorite="matcha-and-pilates" aria-pressed="false" aria-label="Save Matcha &amp; Pilates to your favorites"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7.5-4.6-7.5-10A4.25 4.25 0 0 1 12 7.2 4.25 4.25 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/></svg></button>
+              <a class="btn btn-small btn-outline" href="events/matcha-and-pilates.html">Reserve</a>
+            </div>
           </li>
           <li class="event">
             <p class="event-date"><span class="event-month">Coming</span><span class="event-weekday">soon</span></p>
@@ -136,7 +143,10 @@
               <h3>Pilates, Petals &amp; Mocktails</h3>
               <p class="event-desc">move, create, sip. begin with a grounding pilates flow then build your own bouquet while enjoying handcrafted mocktails and slow conversation.</p>
             </div>
-            <a class="btn btn-small btn-outline" href="events/pilates-petals-and-mocktails.html">Reserve</a>
+            <div class="event-actions">
+              <button class="heart" type="button" data-favorite="pilates-petals-and-mocktails" aria-pressed="false" aria-label="Save Pilates, Petals &amp; Mocktails to your favorites"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7.5-4.6-7.5-10A4.25 4.25 0 0 1 12 7.2 4.25 4.25 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/></svg></button>
+              <a class="btn btn-small btn-outline" href="events/pilates-petals-and-mocktails.html">Reserve</a>
+            </div>
           </li>
           <li class="event">
             <p class="event-date"><span class="event-month">Coming</span><span class="event-weekday">soon</span></p>
@@ -144,7 +154,10 @@
               <h3>Sunset Rooftop Pilates &amp; Live DJ</h3>
               <p class="event-desc">golden hour, city views, deep house. flow through a sunset pilates class set to a live dj then stay for the music and good company as the sky fades.</p>
             </div>
-            <a class="btn btn-small btn-outline" href="events/sunset-rooftop-pilates.html">Reserve</a>
+            <div class="event-actions">
+              <button class="heart" type="button" data-favorite="sunset-rooftop-pilates" aria-pressed="false" aria-label="Save Sunset Rooftop Pilates &amp; Live DJ to your favorites"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7.5-4.6-7.5-10A4.25 4.25 0 0 1 12 7.2 4.25 4.25 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/></svg></button>
+              <a class="btn btn-small btn-outline" href="events/sunset-rooftop-pilates.html">Reserve</a>
+            </div>
           </li>
         </ol>
       </div>
@@ -290,5 +303,6 @@
 <!-- BODY:END -->
 
 <script src="js/main.js"></script>
+<script src="js/member.js"></script>
 </body>
 </html>
