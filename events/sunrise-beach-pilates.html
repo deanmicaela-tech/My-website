@@ -131,6 +131,19 @@
               <label for="rf-notes">Anything we should know? <span class="optional">(optional)</span></label>
               <textarea id="rf-notes" name="notes" rows="3" placeholder="First class, an injury, a friend joining you..."></textarea>
             </div>
+            <!-- Waiver: required to book. The agreement is saved with the mat booking and in the Netlify Forms entry. -->
+            <div class="waiver">
+              <details class="waiver-text">
+                <summary>Read the waiver</summary>
+                <p>Pilates is physical exercise and I take part at my own risk. I confirm I'm in good health to exercise, or have my doctor's okay, and I'll tell the instructor about any injury, pregnancy or health condition before class. I release Orvella and its instructors from responsibility for any injury, loss or damage that happens during or because of the class, except where caused by their gross negligence.</p>
+                <p>I'm 18 or older, or 16 to 17 with a parent's signed consent. I'll arrive 10 to 15 minutes early.</p>
+                <p>Refunds: full refund if I cancel more than 7 days before the class, 50% between 7 days and 48 hours before, and no refund within 48 hours.</p>
+              </details>
+              <label class="waiver-check" for="rf-waiver">
+                <input id="rf-waiver" name="waiver" type="checkbox" value="Agreed" required>
+                <span>I have read and agree to the waiver and refund policy.</span>
+              </label>
+            </div>
             <div class="form-actions">
               <button class="btn" type="submit">Request my spot</button>
               <p class="form-status" role="status" aria-live="polite"></p>

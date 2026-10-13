@@ -170,7 +170,8 @@
       body: JSON.stringify({
         event: map.slug, mats: mats,
         name: form.elements.name.value, email: form.elements.email.value,
-        phone: form.elements.phone.value, 'bot-field': form.elements['bot-field'].value
+        phone: form.elements.phone.value, 'bot-field': form.elements['bot-field'].value,
+        waiver: form.elements.waiver ? form.elements.waiver.checked : undefined
       })
     }).then(function (res) {
       return res.json().catch(function () { return {}; }).then(function (data) {

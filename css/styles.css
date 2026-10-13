@@ -639,6 +639,12 @@ a:hover { color: var(--ink); }
 .mat-swatch.is-picked { background: var(--berry); border-color: var(--berry); }
 .mat-swatch.is-taken { background: var(--line); border-color: var(--line); opacity: 0.55; }
 .mat-picked { margin: 0; text-align: center; font-family: var(--font-display); font-variation-settings: "SOFT" 100; font-size: 1.0625rem; color: var(--ink); }
+.waiver { display: grid; gap: 12px; }
+.waiver-text { font-size: 0.875rem; color: var(--ink-soft); }
+.waiver-text summary { cursor: pointer; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--berry); }
+.waiver-text p { margin: 10px 0 0; }
+.waiver-check { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9375rem; color: var(--ink); cursor: pointer; }
+.waiver-check input { flex: none; width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--berry); }
 @media (max-width: 560px) {
   .mat-grid { grid-template-columns: 10px repeat(var(--per-row, 14), minmax(0, 1fr)); gap: 8px 2px; }
   .mat { height: 44px; border-radius: 4px; font-size: 0.625rem; padding-bottom: 4px; }
