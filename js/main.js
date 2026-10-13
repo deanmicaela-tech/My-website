@@ -126,6 +126,7 @@
       if (!b || b.disabled) return;
       var at = picked.indexOf(b.value);
       if (at !== -1) picked.splice(at, 1);
+      else if (max === 1) picked = [b.value];
       else if (picked.length < max) picked.push(b.value);
       else { label.textContent = 'You can pick up to ' + max + ' mats per booking.'; return; }
       render();
@@ -170,7 +171,8 @@
       body: JSON.stringify({
         event: map.slug, mats: mats,
         name: form.elements.name.value, email: form.elements.email.value,
-        phone: form.elements.phone.value, 'bot-field': form.elements['bot-field'].value
+        phone: form.elements.phone.value, 'bot-field': form.elements['bot-field'].value,
+        waiver: form.elements.waiver ? form.elements.waiver.checked : undefined
       })
     }).then(function (res) {
       return res.json().catch(function () { return {}; }).then(function (data) {
@@ -182,6 +184,23 @@
         form.dataset.claimed = mats.join(',');
       });
     });
+  }
+
+  // Waiver pop-up on event pages: "I agree" ticks the waiver box on the booking form
+  var waiverDialog = document.getElementById('waiver-dialog');
+  if (waiverDialog) {
+    document.querySelectorAll('[data-open-waiver]').forEach(function (b) {
+      b.addEventListener('click', function (e) { e.preventDefault(); waiverDialog.showModal(); });
+    });
+    waiverDialog.querySelectorAll('[data-close-waiver]').forEach(function (b) {
+      b.addEventListener('click', function () { waiverDialog.close(); });
+    });
+    waiverDialog.querySelector('[data-agree-waiver]').addEventListener('click', function () {
+      var box = document.getElementById('rf-waiver');
+      if (box) box.checked = true;
+      waiverDialog.close();
+    });
+    waiverDialog.addEventListener('click', function (e) { if (e.target === waiverDialog) waiverDialog.close(); });
   }
 
   // Forms are sent to Netlify Forms, which collects the submissions
