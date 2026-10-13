@@ -627,6 +627,7 @@ a:hover { color: var(--ink); }
   background: var(--blush);
   font: inherit; font-size: 0.6875rem; line-height: 1; color: var(--ink-soft);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   transition: background-color 0.15s, border-color 0.15s, color 0.15s;
 }
 .mat:hover { border-color: var(--berry); }
@@ -640,9 +641,22 @@ a:hover { color: var(--ink); }
 .mat-swatch.is-taken { background: var(--line); border-color: var(--line); opacity: 0.55; }
 .mat-picked { margin: 0; text-align: center; font-family: var(--font-display); font-variation-settings: "SOFT" 100; font-size: 1.0625rem; color: var(--ink); }
 .waiver { display: grid; gap: 12px; }
-.waiver-text { font-size: 0.875rem; color: var(--ink-soft); }
-.waiver-text summary { cursor: pointer; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--berry); }
-.waiver-text p { margin: 10px 0 0; }
+.link-button { padding: 0; border: 0; background: none; font: inherit; color: var(--berry); text-decoration: underline; cursor: pointer; }
+.waiver-dialog {
+  width: min(640px, calc(100vw - 32px)); max-height: calc(100dvh - 48px);
+  padding: 0; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--white); color: var(--ink);
+  box-shadow: 0 30px 60px -30px var(--mauve);
+}
+.waiver-dialog[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
+.waiver-dialog::backdrop { background: rgba(74, 44, 53, 0.45); }
+.waiver-dialog-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 24px 14px; border-bottom: 1px solid var(--line); }
+.waiver-dialog-head h2 { margin: 0; font-size: 1.25rem; }
+.waiver-close { width: 36px; height: 36px; flex: none; border: 0; border-radius: 50%; background: var(--blush); color: var(--ink); font-size: 1.4rem; line-height: 1; cursor: pointer; }
+.waiver-body { overflow-y: auto; padding: 8px 24px 20px; font-size: 0.9375rem; color: var(--ink-soft); }
+.waiver-body h3 { margin: 18px 0 4px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--berry); }
+.waiver-body p { margin: 8px 0 0; }
+.waiver-dialog-foot { display: flex; flex-wrap: wrap; gap: 10px; padding: 14px 24px 20px; border-top: 1px solid var(--line); }
 .waiver-check { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9375rem; color: var(--ink); cursor: pointer; }
 .waiver-check input { flex: none; width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--berry); }
 @media (max-width: 560px) {

@@ -8,7 +8,7 @@ export const EVENTS = {
     rows: ['A', 'B', 'C'],
     perRow: 15,
     opens: Date.parse('2026-10-31T11:00:00Z'), // Sat, Oct 31, 7:00 AM Eastern
-    maxPerBooking: 4,
+    maxPerBooking: 1, // one person per booking
     waiver: true // guests must agree to the waiver on the booking form
   }
 };
@@ -57,7 +57,7 @@ export function createHandler({ store, now = () => Date.now() }) {
     if (event.waiver && body.waiver !== true) return json({ error: 'Please agree to the waiver to book' }, 400);
     if (mats.length < 1 || mats.length > event.maxPerBooking ||
         new Set(mats).size !== mats.length || !mats.every((m) => typeof m === 'string' && validMat(event, m))) {
-      return json({ error: 'Please choose between 1 and ' + event.maxPerBooking + ' mats' }, 400);
+      return json({ error: event.maxPerBooking === 1 ? 'Please choose one mat' : 'Please choose between 1 and ' + event.maxPerBooking + ' mats' }, 400);
     }
 
     const booking = JSON.stringify({

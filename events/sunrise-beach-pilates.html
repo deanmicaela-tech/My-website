@@ -90,7 +90,7 @@
             <p class="fine-print">Booking opens one week before the class. Check back then to reserve your spot.</p>
           </div>
           <!-- Requests are collected by Netlify Forms (Netlify dashboard > Forms > reserve) -->
-          <form class="reserve-form" data-when="after" hidden name="reserve" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-thanks="We've received your request for {event}. We'll email you to confirm your spot. Booked for friends? Send them orvellawellness.com/waiver so each can sign their own waiver before class.">
+          <form class="reserve-form" data-when="after" hidden name="reserve" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-thanks="We've received your request for {event}. We'll email you to confirm your spot.">
             <input type="hidden" name="form-name" value="reserve">
             <input type="hidden" name="event" value="Sat, Nov 7 · Sunrise Beach Pilates · 7:00 – 8:30 AM">
             <p class="hidden-field"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
@@ -111,9 +111,9 @@
               </div>
             </div>
             <!-- Mat map: taken mats are shared through /api/mats (netlify/functions/mats.mjs) -->
-            <fieldset class="mat-map" data-mat-map="sunrise-beach-pilates" data-rows="A,B,C" data-per-row="15" data-max="4">
+            <fieldset class="mat-map" data-mat-map="sunrise-beach-pilates" data-rows="A,B,C" data-per-row="15" data-max="1">
               <legend>Choose your mat</legend>
-              <p class="fine-print">Tap a mat to pick it, up to 4 so you can sit next to your friends.</p>
+              <p class="fine-print">Tap a mat to pick it. Each booking is for one person, so friends who want to sit together can each book the mats side by side.</p>
               <p class="mat-side">Front of the class</p>
               <div class="mat-instructor"><span class="mat-instructor-mat" aria-hidden="true"></span>Instructor</div>
               <div class="mat-grid" role="group" aria-label="Mats, 3 rows of 15 facing the instructor"></div>
@@ -131,19 +131,12 @@
               <label for="rf-notes">Anything we should know? <span class="optional">(optional)</span></label>
               <textarea id="rf-notes" name="notes" rows="3" placeholder="First class, an injury, a friend joining you..."></textarea>
             </div>
-            <!-- Waiver: required to book. The agreement is saved with the mat booking and in the Netlify Forms entry. -->
+            <!-- Waiver: required to book. The full text opens in a pop-up (#waiver-dialog below the form). -->
             <div class="waiver">
-              <details class="waiver-text">
-                <summary>Read the waiver</summary>
-                <p>Pilates is physical exercise and I take part at my own risk. I confirm I'm in good health to exercise, or have my doctor's okay, and I'll tell the instructor about any injury, pregnancy or health condition before class. I release Orvella and its instructors from responsibility for any injury, loss or damage that happens during or because of the class, except where caused by their gross negligence.</p>
-                <p>I'm 18 or older, or 16 to 17 with a parent's signed consent. I'll arrive 10 to 15 minutes early.</p>
-                <p>Refunds: full refund if I cancel more than 7 days before the class, 50% between 7 days and 48 hours before, and no refund within 48 hours.</p>
-              </details>
               <label class="waiver-check" for="rf-waiver">
                 <input id="rf-waiver" name="waiver" type="checkbox" value="Agreed" required>
-                <span>I have read and agree to the waiver and refund policy.</span>
+                <span>I have read and agree to the <button class="link-button" type="button" data-open-waiver>waiver and policies</button>.</span>
               </label>
-              <p class="fine-print">Booking for friends? Each of them signs their own waiver before class at <a href="../waiver.html">orvellawellness.com/waiver</a>.</p>
             </div>
             <div class="form-actions">
               <button class="btn" type="submit">Request my spot</button>
@@ -152,6 +145,59 @@
             <p class="fine-print">Your spot is confirmed once we email you back.</p>
           </form>
         </div>
+        <!-- WAIVER: the full waiver shown in a pop-up from the booking form. Edit the wording here. -->
+        <dialog class="waiver-dialog" id="waiver-dialog" aria-labelledby="waiver-title">
+          <div class="waiver-dialog-head">
+            <h2 id="waiver-title">Waiver, release and class policies</h2>
+            <button class="waiver-close" type="button" data-close-waiver aria-label="Close">&times;</button>
+          </div>
+          <div class="waiver-body">
+            <p>Please read this carefully. By ticking "I agree" when you book, you are signing this waiver electronically, and it has the same effect as a handwritten signature. It applies to every Orvella class or event you attend.</p>
+
+            <h3>1. Taking part is your choice</h3>
+            <p>I am choosing to take part in an Orvella pilates class or event, including any warm-up, breathwork, stretching, social time and related activities (the "class"). Nobody is requiring me to attend.</p>
+
+            <h3>2. Risks of exercise</h3>
+            <p>I understand that pilates and other physical exercise carry risks. These include muscle soreness, strains, sprains, falls, joint or back injuries, dizziness, fainting, dehydration and, in rare cases, heart problems, serious injury or death. I accept these risks.</p>
+
+            <h3>3. Outdoor and beach classes</h3>
+            <p>Some classes take place outdoors, on the beach, on rooftops or at other venues. I understand that outdoor settings bring extra risks, including uneven or shifting sand, hidden objects, slippery surfaces, sun exposure, heat, wind, insects, wildlife, water and changing weather. I'll wear sunscreen, bring water and take care of myself. I'll follow the venue's rules, and I won't go in the water as part of the class.</p>
+
+            <h3>4. My health</h3>
+            <p>I confirm that I am in good health and able to exercise, or that my doctor has said I can take part. I will tell the instructor before class about any injury, pain, surgery, pregnancy, heart or breathing condition, or other health issue. I know I can rest, modify or skip any exercise at any time, and I'll stop and tell the instructor if I feel pain, dizziness or discomfort. Orvella's instructors are not doctors and don't give medical advice.</p>
+
+            <h3>5. Release of liability</h3>
+            <p>To the fullest extent the law allows, I release Orvella, its owners, instructors, staff, volunteers, partners and venues from any claims, demands or liability for injury, illness, death, or loss of or damage to property that happens during or because of the class, including claims based on their own negligence, except where caused by gross negligence or willful misconduct. I agree not to sue them for these claims, and this release also binds my heirs and anyone acting for me.</p>
+
+            <h3>6. Medical emergencies</h3>
+            <p>If I am injured or become ill and can't make decisions, I allow Orvella to call emergency services and arrange first aid or medical care for me. I am responsible for any medical costs.</p>
+
+            <h3>7. Age</h3>
+            <p>I am 18 or older. Guests who are 16 or 17 may attend only with a parent or guardian's signed consent, which they must bring to class. Guests under 16 can't attend.</p>
+
+            <h3>8. Arriving and class conduct</h3>
+            <p>I'll arrive 10 to 15 minutes early so the class can start on time. I'll follow the instructor's directions, treat other guests with respect, and won't attend under the influence of alcohol or drugs. The instructor may ask anyone who is unsafe or disruptive to leave, without a refund.</p>
+
+            <h3>9. My belongings</h3>
+            <p>I am responsible for my own belongings. Orvella isn't responsible for anything lost, stolen or damaged.</p>
+
+            <h3>10. Photos and video</h3>
+            <p>Orvella may take photos or video during classes and share them on its website and social media. If I don't want to appear, I'll tell the instructor at check-in or email orvellawellness@gmail.com.</p>
+
+            <h3>11. Refunds and cancellations</h3>
+            <p>Each booking is for one person and one mat. If I cancel more than 7 days before the class, I get a full refund. If I cancel between 7 days and 48 hours before, I get a 50% refund. There's no refund within 48 hours of the class or for no-shows. To cancel, I'll email orvellawellness@gmail.com.</p>
+
+            <h3>12. Weather and changes</h3>
+            <p>If Orvella cancels or moves a class, for example because of weather, I'll be told by email and Orvella's weather and rain-date policy will apply. Orvella may change the location, time or instructor if needed.</p>
+
+            <h3>13. The legal part</h3>
+            <p>This waiver is governed by Florida law. If any part of it can't be enforced, the rest still applies. I have read this waiver, I understand it, and I agree to it freely.</p>
+          </div>
+          <div class="waiver-dialog-foot">
+            <button class="btn" type="button" data-agree-waiver>I agree</button>
+            <button class="btn btn-outline" type="button" data-close-waiver>Close</button>
+          </div>
+        </dialog>
       </div>
     </div>
   </section>
