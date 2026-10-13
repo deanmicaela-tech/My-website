@@ -90,7 +90,7 @@
             <p class="fine-print">Booking opens one week before the class. Check back then to reserve your spot.</p>
           </div>
           <!-- Requests are collected by Netlify Forms (Netlify dashboard > Forms > reserve) -->
-          <form class="reserve-form" data-when="after" hidden name="reserve" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-thanks="We've received your request for {event}. We'll email you to confirm your spot.">
+          <form class="reserve-form" data-when="after" hidden name="reserve" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-thanks="We've received your request for {event}. We'll email you to confirm your spot. Booked for friends? Send them orvellawellness.com/waiver so each can sign their own waiver before class.">
             <input type="hidden" name="form-name" value="reserve">
             <input type="hidden" name="event" value="Sat, Nov 7 · Sunrise Beach Pilates · 7:00 – 8:30 AM">
             <p class="hidden-field"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
@@ -143,6 +143,7 @@
                 <input id="rf-waiver" name="waiver" type="checkbox" value="Agreed" required>
                 <span>I have read and agree to the waiver and refund policy.</span>
               </label>
+              <p class="fine-print">Booking for friends? Each of them signs their own waiver before class at <a href="../waiver.html">orvellawellness.com/waiver</a>.</p>
             </div>
             <div class="form-actions">
               <button class="btn" type="submit">Request my spot</button>

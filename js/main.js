@@ -185,6 +185,22 @@
     });
   }
 
+  // Waiver page: parent or guardian fields are required for 16 and 17 year olds
+  var age = document.getElementById('wv-age');
+  if (age) {
+    var minor = document.querySelector('[data-minor]');
+    var setMinor = function () {
+      var isMinor = age.value === '16 or 17';
+      minor.hidden = !isMinor;
+      minor.querySelectorAll('input').forEach(function (input) { input.required = isMinor; });
+    };
+    age.addEventListener('change', setMinor);
+    setMinor();
+    age.form.addEventListener('submit', function () {
+      age.form.elements['signed-on'].value = new Date().toLocaleString('en-US', { timeZone: TIME_ZONE });
+    }, true);
+  }
+
   // Forms are sent to Netlify Forms, which collects the submissions
   function showThanks(form) {
     var card = form.parentElement;
