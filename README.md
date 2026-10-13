@@ -73,6 +73,12 @@ Both are public by design. Never put the *service_role* / *secret* key in the si
 
 In Supabase, under *Authentication → URL Configuration*, set the Site URL to `https://orvellawellness.com` and add `https://orvellawellness.com/account.html` to the Redirect URLs, so the confirmation and password-reset emails link back to the site.
 
+### Member database
+
+`supabase/setup.sql` creates the member tables in Supabase: **events** (the pop-ups), **bookings** (who booked what, and whether they attended or cancelled), **favorites** (hearted events) and **profiles**. To set it up or refresh it, open Supabase → *SQL Editor* → *New query*, paste the whole file and click *Run*. Running it again is safe.
+
+Members can only ever see their own bookings and favorites; bookings can only be added or changed by the site's own server code, never from a browser. A booking is matched to a member by email, once they have confirmed that email, including bookings made before they signed up. When you add a new event, add a row for it in the **events** table (its id is the event page's file name without `.html`).
+
 ## Brand
 
 | Token | Colour | Used for |
