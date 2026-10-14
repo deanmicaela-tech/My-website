@@ -1,0 +1,10 @@
+# Old event pages that were replaced: send anyone with an old link to the pop-ups list
+/events/sunrise-mat-pilates.html /#events 301
+/events/pilates-and-matcha.html /#events 301
+/events/candlelight-sculpt-and-stretch.html /#events 301
+/events/holiday-glow-pop-up.html /#events 301
+
+# Saved events, off the site for now (see drafts/README.md)
+/events/new-years-pilates-and-vision-boards.html /#events 301
+/events/galentines-pilates.html /#events 301
+/drafts/* /#events 301

@@ -153,7 +153,7 @@
     setInterval(function () { if (!form.hidden && document.visibilityState === 'visible') refresh(); }, 20000);
   });
 
-  // Reserve the chosen mats before the booking request goes to Netlify Forms
+  // Reserve the chosen mats before the booking request is sent
   function matError(message) {
     var err = new Error(message);
     err.show = true;
@@ -203,7 +203,7 @@
     waiverDialog.addEventListener('click', function (e) { if (e.target === waiverDialog) waiverDialog.close(); });
   }
 
-  // Forms are sent to Netlify Forms, which collects the submissions
+  // Forms are saved and emailed to Orvella by /api/forms (lib/forms-core.mjs)
   function showThanks(form) {
     var card = form.parentElement;
     var first = (form.elements.name.value || '').trim().split(/\s+/)[0];
@@ -219,6 +219,7 @@
     card.querySelector('.form-thanks').focus();
   }
 
+  // The site's forms (data-netlify is a leftover name from when the site was on Netlify)
   document.querySelectorAll('form[data-netlify]').forEach(function (form) {
     var status = form.querySelector('.form-status');
     var button = form.querySelector('button[type="submit"]');
@@ -230,7 +231,7 @@
 
       claimMats(form)
         .then(function () {
-          return fetch('/', {
+          return fetch('/api/forms', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams(new FormData(form)).toString()

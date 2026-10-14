@@ -173,9 +173,9 @@ create policy "Members remove their own favorites" on public.favorites
   for delete to authenticated using ((select auth.uid()) = user_id);
 
 -- ---------- The pop-ups on the site today ----------
--- Times are stored in UTC: Sat Nov 7 2026, 7:00 AM Eastern = 12:00 UTC.
+-- Times are stored in UTC, e.g. 7:00 AM Eastern in November = 12:00 UTC.
 insert into public.events (id, title, starts_at, location) values
-  ('sunrise-beach-pilates', 'Sunrise Beach Pilates', '2026-11-07 12:00:00+00', 'Location announced soon'),
+  ('sunrise-beach-pilates', 'Sunrise Beach Pilates', null, null),
   ('matcha-and-pilates', 'Matcha & Pilates', null, null),
   ('pilates-petals-and-mocktails', 'Pilates, Petals & Mocktails', null, null),
   ('sunset-rooftop-pilates', 'Sunset Rooftop Pilates & Live DJ', null, null)

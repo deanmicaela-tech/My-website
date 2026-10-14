@@ -3,6 +3,9 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@netlify/blobs": "^11.1.4"
+    "worker-mailer": "1.2.1"
+  },
+  "devDependencies": {
+    "wrangler": "4.143.0"
   }
 }

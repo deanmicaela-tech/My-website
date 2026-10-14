@@ -1,0 +1,25 @@
+# Cloudflare settings for orvellawellness.com (see README.md > Hosting on Cloudflare)
+name = "orvella"
+main = "worker/index.mjs"
+compatibility_date = "2026-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+# The website itself: every file in the repo except what .assetsignore leaves out
+[assets]
+directory = "."
+binding = "ASSETS"
+html_handling = "none"
+not_found_handling = "none"
+
+# The site's own small database (taken mats, sent alerts, form submissions).
+# Cloudflare creates it on the first deploy.
+[[d1_databases]]
+binding = "DB"
+database_name = "orvella"
+
+# Favorite alert emails: check every 15 minutes
+[triggers]
+crons = ["*/15 * * * *"]
+
+[vars]
+NOTIFY_EMAIL = "orvellawellness@gmail.com"

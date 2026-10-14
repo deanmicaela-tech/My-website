@@ -1,0 +1,16 @@
+# Files that are part of the repo but not the website
+.git
+.github
+.wrangler
+node_modules
+worker
+lib
+supabase
+drafts
+package.json
+package-lock.json
+wrangler.toml
+README.md
+.gitignore
+.assetsignore
+.dev.vars

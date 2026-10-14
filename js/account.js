@@ -101,6 +101,7 @@
     profileForm.elements.password.value = '';
     profileForm.elements.email_opt_in.checked = meta.email_opt_in === true;
     profileForm.elements.sms_opt_in.checked = meta.sms_opt_in === true;
+    profileForm.elements.favorite_alerts.checked = meta.favorite_alerts !== false; // on unless they turned it off
   }
 
   page.addEventListener('click', function (e) {
@@ -125,7 +126,7 @@
       if (r.error) throw r.error;
       var meta = r.data.user.user_metadata || {};
       var choices = forms.optIns(form);
-      var changes = { data: Object.assign({ first_name: forms.value(form, 'first_name'), phone: forms.value(form, 'phone') }, choices) };
+      var changes = { data: Object.assign({ first_name: forms.value(form, 'first_name'), phone: forms.value(form, 'phone'), favorite_alerts: form.elements.favorite_alerts.checked }, choices) };
       if (choices.email_opt_in !== (meta.email_opt_in === true) || choices.sms_opt_in !== (meta.sms_opt_in === true)) {
         changes.data.opt_in_at = new Date().toISOString();
       }
