@@ -80,6 +80,20 @@ In Supabase, under *Authentication → URL Configuration*, set the Site URL to `
 
 Members can only ever see their own bookings and favorites; bookings can only be added or changed by the site's own server code, never from a browser. A booking is matched to a member by email, once they have confirmed that email, including bookings made before they signed up. When you add a new event, add a row for it in the **events** table (its id is the event page's file name without `.html`).
 
+### Favorite alerts
+
+When booking opens for a pop-up, everyone who hearted it gets one email from Orvella with a "Book your spot" button (`netlify/functions/favorite-alerts.mjs`, checked every 15 minutes, for the first 3 days after booking opens). Members can turn these off with the "Email me when my favorites open for booking" box in *Edit profile*. The opening times are listed at the top of `netlify/lib/favorite-alerts-core.mjs`; when a "Coming soon" pop-up gets its date, add it there too.
+
+It only runs once these are set in Netlify under *Project configuration → Environment variables* (tick **Contains secret values** for the two secret ones):
+
+| Name | What to put |
+| --- | --- |
+| `SUPABASE_SERVICE_ROLE_KEY` (secret) | Supabase → Project Settings → API keys (the *service_role* / *secret* key) |
+| `SMTP_USER` | `orvellawellness@gmail.com` |
+| `SMTP_PASS` (secret) | A Gmail app password (myaccount.google.com/apppasswords) |
+
+The service role key can read every member's data, so it must only ever live in this secret variable, never in the site's code.
+
 ## Brand
 
 | Token | Colour | Used for |
