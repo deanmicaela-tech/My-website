@@ -1,7 +1,7 @@
 // The website on Cloudflare. Pages, images, CSS and JS are served as they are
 // from the repo (see .assetsignore for what's left out); this Worker only
 // handles the /api/ addresses and the every-15-minutes favorite alerts.
-// Settings (Cloudflare > Workers & Pages > orvella > Settings > Variables and secrets):
+// Settings (Cloudflare > Workers & Pages > my-website > Settings > Variables and secrets):
 //   SUPABASE_URL, SUPABASE_ANON_KEY    member accounts (public)
 //   SUPABASE_SERVICE_ROLE_KEY          favorite alerts (secret)
 //   SMTP_USER, SMTP_PASS               sending email through Gmail (SMTP_PASS secret)

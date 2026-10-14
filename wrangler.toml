@@ -1,5 +1,5 @@
 # Cloudflare settings for orvellawellness.com (see README.md > Hosting on Cloudflare)
-name = "orvella"
+name = "my-website"
 main = "worker/index.mjs"
 compatibility_date = "2026-09-01"
 compatibility_flags = ["nodejs_compat"]
