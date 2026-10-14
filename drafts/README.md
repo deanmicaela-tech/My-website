@@ -37,7 +37,7 @@ Sunrise Beach Pilates shows as "Coming soon" until a new date is picked. Its ful
 To bring it back with a new date:
 1. Copy `drafts/events/sunrise-beach-pilates.html` over `events/sunrise-beach-pilates.html`.
 2. In that page, change the date and time everywhere it appears (page description, heading, summary list, and the hidden `event` field), the `data-booking-opens` value, and the "Booking opens" line.
-3. In `netlify/lib/mats-core.mjs`, set `opens` for `sunrise-beach-pilates` to the booking opening time in UTC (7:00 AM Eastern is 11:00 UTC before Nov 1 and 12:00 UTC after). Until then the mat server accepts no bookings.
+3. In `lib/mats-core.mjs`, set `opens` for `sunrise-beach-pilates` to the booking opening time in UTC (7:00 AM Eastern is 11:00 UTC before Nov 1 and 12:00 UTC after). Until then the mat server accepts no bookings. Add the same time to `BOOKING_OPENS` in `lib/favorite-alerts-core.mjs` so members who hearted it get the "booking is open" email.
 4. In `index.html`, swap the Sunrise "Coming soon" date for the new date and add back its time line:
 
 ```html
