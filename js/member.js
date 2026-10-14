@@ -1,7 +1,7 @@
 // Member features on every page: the profile icon in the header, the log in /
 // sign up pop-up, and the hearts on events. Accounts live in Supabase; the
 // browser only ever gets the public URL and "anon" key, from /api/config
-// (netlify/functions/config.mjs). account.js builds the account page on top of this.
+// (worker/index.mjs). account.js builds the account page on top of this.
 (function () {
   var root = new URL('..', document.currentScript.src).href; // the site's home folder
   var accountUrl = root + 'account.html';

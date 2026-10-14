@@ -2,12 +2,12 @@
 
 New Year's Pilates & Vision Boards (Dec 31, 2026) and Galentine's Pilates (Feb 6, 2027) were taken off the site for now, to bring back closer to the date.
 
-The full event pages, with time, price, length and booking box, are in `drafts/events/`. Visitors who open anything in `drafts/` are sent to the pop-ups list (see `netlify.toml`).
+The full event pages, with time, price, length and booking box, are in `drafts/events/`. Visitors who open anything in `drafts/` are sent to the pop-ups list (see `_redirects`).
 
 To bring one back:
 1. Move its page from `drafts/events/` to `events/`.
 2. Paste its row below into the `<ol class="event-list">` in `index.html`, in date order.
-3. Remove its redirect from `netlify.toml`.
+3. Remove its redirect from `_redirects`.
 
 ```html
           <li class="event">
