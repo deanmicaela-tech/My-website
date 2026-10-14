@@ -5,9 +5,9 @@
 
 // When booking opens for each event (UTC). When a "Coming soon" event gets its
 // date, add it here with the same time as data-booking-opens on its page.
-export const BOOKING_OPENS = {
-  'sunrise-beach-pilates': '2026-10-31T11:00:00Z' // Sat, Oct 31, 7:00 AM Eastern
-};
+// Example: 'sunrise-beach-pilates': '2026-10-31T11:00:00Z' (7:00 AM Eastern).
+// Sunrise Beach Pilates is "Coming soon" with no date for now (Oct 14, 2026).
+export const BOOKING_OPENS = {};
 
 // Alerts only go out in the first 3 days after booking opens
 const WINDOW = 3 * 24 * 60 * 60 * 1000;
@@ -61,7 +61,7 @@ export function alertEmail({ firstName, event, siteUrl }) {
 
 // fetch: talks to Supabase with the service role key (server only).
 // store: Netlify Blobs store. send({ to, subject, text, html }): sends one email.
-export function createRunner({ supabaseUrl, serviceKey, siteUrl, store, send, fetch = globalThis.fetch, now = () => Date.now(), log = console.log }) {
+export function createRunner({ opens: schedule = BOOKING_OPENS, supabaseUrl, serviceKey, siteUrl, store, send, fetch = globalThis.fetch, now = () => Date.now(), log = console.log }) {
   const headers = { apikey: serviceKey, Authorization: 'Bearer ' + serviceKey };
   async function get(path) {
     const res = await fetch(supabaseUrl + path, { headers });
@@ -71,7 +71,7 @@ export function createRunner({ supabaseUrl, serviceKey, siteUrl, store, send, fe
 
   return async function run() {
     let sent = 0;
-    for (const [slug, opens] of Object.entries(BOOKING_OPENS)) {
+    for (const [slug, opens] of Object.entries(schedule)) {
       const start = Date.parse(opens);
       if (now() < start || now() > start + WINDOW) continue;
 
