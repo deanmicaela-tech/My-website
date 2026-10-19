@@ -3,6 +3,9 @@ name = "my-website"
 main = "worker/index.mjs"
 compatibility_date = "2026-09-01"
 compatibility_flags = ["nodejs_compat"]
+# Keep the settings added in the Cloudflare dashboard when the site publishes
+# (without this, every publish erases them, except ones saved as Secret)
+keep_vars = true
 
 # The website itself: every file in the repo except what .assetsignore leaves out
 [assets]
