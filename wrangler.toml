@@ -15,10 +15,11 @@ html_handling = "none"
 not_found_handling = "none"
 
 # The site's own small database (taken mats, sent alerts, form submissions).
-# Cloudflare creates it on the first deploy.
+# Created on the first deploy; the id below is that database.
 [[d1_databases]]
 binding = "DB"
 database_name = "orvella"
+database_id = "7be07678-cf47-470a-859f-5f7e94b4e430"
 
 # Favorite alert emails: check every 15 minutes
 [triggers]
