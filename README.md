@@ -66,7 +66,7 @@ Search `index.html` for these comments:
 
 Members tap the profile icon in every page's header to log in or sign up in a pop-up; once logged in, the icon goes to `account.html`, which shows how many classes they've attended and booked, their favorite pop-ups, and an *Edit profile* section. The hearts on the home page's events save favorites (logged out, a tap opens the log in pop-up). Accounts are run by [Supabase](https://supabase.com); the site keeps no passwords itself.
 
-The account page only works once these are set in Cloudflare under *Workers & Pages → orvella → Settings → Variables and secrets*:
+The account page only works once these are set in Cloudflare under *Workers & Pages → my-website → Settings → Variables and secrets*:
 
 | Name | Where to find it |
 | --- | --- |
@@ -87,7 +87,7 @@ Members can only ever see their own bookings and favorites; bookings can only be
 
 When booking opens for a pop-up, everyone who hearted it gets one email from Orvella with a "Book your spot" button (the scheduled part of `worker/index.mjs`, checked every 15 minutes, for the first 3 days after booking opens). Members can turn these off with the "Email me when my favorites open for booking" box in *Edit profile*. The opening times are listed at the top of `lib/favorite-alerts-core.mjs`; when a "Coming soon" pop-up gets its date, add it there too.
 
-It only runs once these are set in Cloudflare under *Workers & Pages → orvella → Settings → Variables and secrets* (choose type **Secret** for the two secret ones). `SMTP_USER` and `SMTP_PASS` also send the form emails:
+It only runs once these are set in Cloudflare under *Workers & Pages → my-website → Settings → Variables and secrets* (choose type **Secret** for the two secret ones). `SMTP_USER` and `SMTP_PASS` also send the form emails:
 
 | Name | What to put |
 | --- | --- |
@@ -112,7 +112,7 @@ Fonts: the logo is your TAN Kindred wordmark, embedded as an SVG drawing so it l
 
 ## Hosting on Cloudflare
 
-The site runs as one Cloudflare Worker named `orvella` (free plan): the pages and images are served as they are, and `worker/index.mjs` answers `/api/config`, `/api/mats` and `/api/forms` and sends favorite alerts every 15 minutes. The settings are in `wrangler.toml`. Its small database (D1, named `orvella`) is created on the first deploy, and its tables are created automatically.
+The site runs as one Cloudflare Worker named `my-website` (free plan): the pages and images are served as they are, and `worker/index.mjs` answers `/api/config`, `/api/mats` and `/api/forms` and sends favorite alerts every 15 minutes. The settings are in `wrangler.toml`. Its small database (D1, named `orvella`) is created on the first deploy, and its tables are created automatically.
 
 Set up once:
 1. In Cloudflare go to *Workers & Pages → Create → Import a repository*, pick this GitHub repo, and keep the suggested build settings (deploy command `npx wrangler deploy`). Every change to `main` then publishes on its own.

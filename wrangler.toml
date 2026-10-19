@@ -1,8 +1,11 @@
 # Cloudflare settings for orvellawellness.com (see README.md > Hosting on Cloudflare)
-name = "orvella"
+name = "my-website"
 main = "worker/index.mjs"
 compatibility_date = "2026-09-01"
 compatibility_flags = ["nodejs_compat"]
+# Keep the settings added in the Cloudflare dashboard when the site publishes
+# (without this, every publish erases them, except ones saved as Secret)
+keep_vars = true
 
 # The website itself: every file in the repo except what .assetsignore leaves out
 [assets]
@@ -12,10 +15,11 @@ html_handling = "none"
 not_found_handling = "none"
 
 # The site's own small database (taken mats, sent alerts, form submissions).
-# Cloudflare creates it on the first deploy.
+# Created on the first deploy; the id below is that database.
 [[d1_databases]]
 binding = "DB"
 database_name = "orvella"
+database_id = "7be07678-cf47-470a-859f-5f7e94b4e430"
 
 # Favorite alert emails: check every 15 minutes
 [triggers]
@@ -23,3 +27,12 @@ crons = ["*/15 * * * *"]
 
 [vars]
 NOTIFY_EMAIL = "orvellawellness@gmail.com"
+
+# Branch previews (Cloudflare builds one for each pull request).
+# They use the same database and inbox; the preview link is never public.
+[previews.vars]
+NOTIFY_EMAIL = "orvellawellness@gmail.com"
+
+[[previews.d1_databases]]
+binding = "DB"
+database_id = "7be07678-cf47-470a-859f-5f7e94b4e430"
