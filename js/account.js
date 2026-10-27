@@ -63,17 +63,37 @@
     return li;
   }
 
+  // The home page decides which events are "Coming soon": those show no date or
+  // place here either, even if Supabase still has an old one saved.
+  var comingSoon = null;
+  function loadComingSoon() {
+    if (!comingSoon) {
+      comingSoon = fetch('index.html').then(function (res) { return res.ok ? res.text() : ''; }).then(function (html) {
+        var ids = {};
+        new DOMParser().parseFromString(html, 'text/html').querySelectorAll('.event-list .event').forEach(function (li) {
+          var heart = li.querySelector('[data-favorite]');
+          if (heart && !li.querySelector('time.event-date')) ids[heart.getAttribute('data-favorite')] = true;
+        });
+        return ids;
+      }).catch(function () { comingSoon = null; return {}; });
+    }
+    return comingSoon;
+  }
+
   function loadDashboard() {
     return Promise.all([
       client.from('bookings').select('status'),
-      client.from('favorites').select('event_id, events (id, title, starts_at, location)')
+      client.from('favorites').select('event_id, events (id, title, starts_at, location)'),
+      loadComingSoon()
     ]).then(function (r) {
       var bookings = r[0].data || [];
       page.querySelector('[data-stat="attended"]').textContent = bookings.filter(function (b) { return b.status === 'attended'; }).length;
       page.querySelector('[data-stat="booked"]').textContent = bookings.filter(function (b) { return b.status === 'booked'; }).length;
 
       // Soonest first; "Coming soon" events (no date yet) at the end
-      var events = (r[1].data || []).map(function (f) { return f.events; }).filter(Boolean);
+      var events = (r[1].data || []).map(function (f) { return f.events; }).filter(Boolean).map(function (ev) {
+        return r[2][ev.id] ? Object.assign({}, ev, { starts_at: null, location: null }) : ev;
+      });
       events.sort(function (a, b) {
         if (!a.starts_at || !b.starts_at) return a.starts_at ? -1 : b.starts_at ? 1 : a.title.localeCompare(b.title);
         return a.starts_at < b.starts_at ? -1 : 1;
